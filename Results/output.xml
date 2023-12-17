@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.5 on darwin)" generated="20231128 22:58:37.060" rpa="false" schemaversion="4">
+<robot generator="Robot 6.1.1 (Python 3.10.5 on darwin)" generated="20231217 22:47:17.698" rpa="false" schemaversion="4">
 <suite id="s1" name="Fn Login" source="/Users/anan/JMDress/functions/fn_login.robot">
-<test id="s1-t1" name="Search JM" line="30">
+<test id="s1-t1" name="Add to Cart" line="70">
 <kw name="Open New Browser" type="SETUP">
 <arg>${url}</arg>
 <arg>${browser}</arg>
@@ -9,633 +9,1991 @@
 <arg>${url}</arg>
 <arg>${browser}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20231128 22:58:37.139" level="INFO">Opening browser 'chrome' to base url 'https://jm.com.vn/'.</msg>
-<status status="PASS" starttime="20231128 22:58:37.139" endtime="20231128 22:58:39.973"/>
+<msg timestamp="20231217 22:47:17.784" level="INFO">Opening browser 'chrome' to base url 'https://jm.com.vn/'.</msg>
+<status status="PASS" starttime="20231217 22:47:17.784" endtime="20231217 22:47:20.596"/>
 </kw>
 <kw name="Maximize Browser Window" library="Selenium2Library">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20231128 22:58:39.973" endtime="20231128 22:58:40.397"/>
+<status status="PASS" starttime="20231217 22:47:20.596" endtime="20231217 22:47:21.000"/>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <arg>${sleep}</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:58:42.399" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:58:40.397" endtime="20231128 22:58:42.399"/>
+<msg timestamp="20231217 22:47:23.001" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:21.000" endtime="20231217 22:47:23.001"/>
 </kw>
-<status status="PASS" starttime="20231128 22:58:37.139" endtime="20231128 22:58:42.399"/>
+<status status="PASS" starttime="20231217 22:47:17.784" endtime="20231217 22:47:23.002"/>
 </kw>
-<kw name="Input Value">
-<arg>${txtSearch}</arg>
-<arg>${key}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:58:42.400" endtime="20231128 22:58:42.427"/>
+<kw name="Create List" library="BuiltIn">
+<var>@{prodNameList}</var>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20231217 22:47:23.003" level="INFO">@{prodNameList} = [ ]</msg>
+<status status="PASS" starttime="20231217 22:47:23.002" endtime="20231217 22:47:23.003"/>
 </kw>
-<kw name="Capture Element Screenshot" library="Selenium2Library">
-<arg>${locator}</arg>
-<arg>EMBED</arg>
-<doc>Captures a screenshot from the element identified by ``locator`` and embeds it into log file.</doc>
-<msg timestamp="20231128 22:58:42.473" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;img alt="screenshot" class="robot-seleniumlibrary-screenshot" src="data:image/png;base64,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" width="400px"&gt;</msg>
-<status status="PASS" starttime="20231128 22:58:42.427" endtime="20231128 22:58:42.473"/>
+<kw name="Create List" library="BuiltIn">
+<var>@{prodIdList}</var>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20231217 22:47:23.003" level="INFO">@{prodIdList} = [ ]</msg>
+<status status="PASS" starttime="20231217 22:47:23.003" endtime="20231217 22:47:23.003"/>
 </kw>
-<kw name="Input Text" library="Selenium2Library">
-<arg>${locator}</arg>
-<arg>${value}</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20231128 22:58:42.473" level="INFO">Typing text 'Áo' into text field '//div[@class='wrapBoxSearch hidden-sm hidden-xs']//input[@placeholder='Bạn muốn tìm sản phẩm gì ?']'.</msg>
-<status status="PASS" starttime="20231128 22:58:42.473" endtime="20231128 22:58:42.541"/>
+<kw name="Create List" library="BuiltIn">
+<var>@{priceProdList}</var>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20231217 22:47:23.003" level="INFO">@{priceProdList} = [ ]</msg>
+<status status="PASS" starttime="20231217 22:47:23.003" endtime="20231217 22:47:23.003"/>
 </kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:58:44.542" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:58:42.541" endtime="20231128 22:58:44.542"/>
+<kw name="Create List" library="BuiltIn">
+<var>@{quatityProdList}</var>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20231217 22:47:23.004" level="INFO">@{quatityProdList} = [ ]</msg>
+<status status="PASS" starttime="20231217 22:47:23.004" endtime="20231217 22:47:23.004"/>
 </kw>
-<status status="PASS" starttime="20231128 22:58:42.400" endtime="20231128 22:58:44.542"/>
-</kw>
+<for flavor="IN">
+<var>${item}</var>
+<value>@{list}</value>
+<iter>
+<var name="${item}">6</var>
 <kw name="Click On Locator">
-<arg>${btnSearch}</arg>
+<arg>//div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active'][${item}]//div[@class='productImage']</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:23.024" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:23.006" endtime="20231217 22:47:23.024"/>
+</kw>
+<msg timestamp="20231217 22:47:23.024" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:23.006" endtime="20231217 22:47:23.024"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:23.025" endtime="20231217 22:47:23.025"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:23.025" endtime="20231217 22:47:23.025"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:23.024" endtime="20231217 22:47:23.025"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:23.024" endtime="20231217 22:47:23.025"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:23.005" endtime="20231217 22:47:23.025"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:23.025" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:23.047" level="INFO">${showCart} = display: none;</msg>
+<status status="PASS" starttime="20231217 22:47:23.025" endtime="20231217 22:47:23.047"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:23.047" endtime="20231217 22:47:23.047"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:23.047" endtime="20231217 22:47:23.047"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:23.047" endtime="20231217 22:47:23.047"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:23.025" endtime="20231217 22:47:23.047"/>
+</kw>
 <kw name="Wait Until Element Is Enabled" library="Selenium2Library">
 <arg>${locator}</arg>
 <doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:58:44.544" endtime="20231128 22:58:44.581"/>
+<status status="PASS" starttime="20231217 22:47:23.048" endtime="20231217 22:47:23.069"/>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <arg>${locator}</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:58:44.582" level="INFO">Clicking element '//button[contains(text(),'Tìm kiếm ngay')]'.</msg>
-<status status="PASS" starttime="20231128 22:58:44.581" endtime="20231128 22:58:45.328"/>
+<msg timestamp="20231217 22:47:23.070" level="INFO">Clicking element '//div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active'][6]//div[@class='productImage']'.</msg>
+<status status="PASS" starttime="20231217 22:47:23.069" endtime="20231217 22:47:24.496"/>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <arg>${sleep}</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:58:47.330" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:58:45.328" endtime="20231128 22:58:47.331"/>
+<msg timestamp="20231217 22:47:26.500" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:24.497" endtime="20231217 22:47:26.500"/>
 </kw>
-<status status="PASS" starttime="20231128 22:58:44.543" endtime="20231128 22:58:47.331"/>
-</kw>
-<kw name="Page Should Contain" library="Selenium2Library">
-<arg>sản phẩm tìm kiếm với kết quả "${key}"</arg>
-<doc>Verifies that current page contains ``text``.</doc>
-<msg timestamp="20231128 22:58:47.357" level="INFO">Current page contains text 'sản phẩm tìm kiếm với kết quả "Áo"'.</msg>
-<status status="PASS" starttime="20231128 22:58:47.331" endtime="20231128 22:58:47.358"/>
-</kw>
-<kw name="Capture Page Screenshot" library="Selenium2Library">
-<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
-<msg timestamp="20231128 22:58:47.923" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-16.png"&gt;&lt;img src="selenium-screenshot-16.png" width="800px"&gt;&lt;/a&gt;</msg>
-<status status="PASS" starttime="20231128 22:58:47.358" endtime="20231128 22:58:47.923"/>
-</kw>
-<kw name="Close Browser" library="Selenium2Library" type="TEARDOWN">
-<doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20231128 22:58:47.923" endtime="20231128 22:58:48.013"/>
-</kw>
-<status status="PASS" starttime="20231128 22:58:37.139" endtime="20231128 22:58:48.014"/>
-</test>
-<test id="s1-t2" name="Filter Size" line="36">
-<kw name="Open New Browser" type="SETUP">
-<arg>${url}</arg>
-<arg>${browser}</arg>
-<kw name="Open Browser" library="Selenium2Library">
-<arg>${url}</arg>
-<arg>${browser}</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20231128 22:58:48.015" level="INFO">Opening browser 'chrome' to base url 'https://jm.com.vn/'.</msg>
-<status status="PASS" starttime="20231128 22:58:48.014" endtime="20231128 22:58:51.039"/>
-</kw>
-<kw name="Maximize Browser Window" library="Selenium2Library">
-<doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20231128 22:58:51.040" endtime="20231128 22:58:51.446"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:58:53.448" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:58:51.446" endtime="20231128 22:58:53.448"/>
-</kw>
-<status status="PASS" starttime="20231128 22:58:48.014" endtime="20231128 22:58:53.448"/>
-</kw>
-<kw name="Input Value">
-<arg>${txtSearch}</arg>
-<arg>${key}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:58:53.451" endtime="20231128 22:58:53.486"/>
-</kw>
-<kw name="Capture Element Screenshot" library="Selenium2Library">
-<arg>${locator}</arg>
-<arg>EMBED</arg>
-<doc>Captures a screenshot from the element identified by ``locator`` and embeds it into log file.</doc>
-<msg timestamp="20231128 22:58:53.559" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;img alt="screenshot" class="robot-seleniumlibrary-screenshot" src="data:image/png;base64,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" width="400px"&gt;</msg>
-<status status="PASS" starttime="20231128 22:58:53.486" endtime="20231128 22:58:53.559"/>
-</kw>
-<kw name="Input Text" library="Selenium2Library">
-<arg>${locator}</arg>
-<arg>${value}</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20231128 22:58:53.560" level="INFO">Typing text 'Áo' into text field '//div[@class='wrapBoxSearch hidden-sm hidden-xs']//input[@placeholder='Bạn muốn tìm sản phẩm gì ?']'.</msg>
-<status status="PASS" starttime="20231128 22:58:53.559" endtime="20231128 22:58:53.620"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:58:55.622" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:58:53.620" endtime="20231128 22:58:55.622"/>
-</kw>
-<status status="PASS" starttime="20231128 22:58:53.449" endtime="20231128 22:58:55.623"/>
-</kw>
-<kw name="Click On Locator">
-<arg>${btnSearch}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:58:55.624" endtime="20231128 22:58:55.659"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:58:55.659" level="INFO">Clicking element '//button[contains(text(),'Tìm kiếm ngay')]'.</msg>
-<status status="PASS" starttime="20231128 22:58:55.659" endtime="20231128 22:58:56.361"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:58:58.363" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:58:56.362" endtime="20231128 22:58:58.363"/>
-</kw>
-<status status="PASS" starttime="20231128 22:58:55.623" endtime="20231128 22:58:58.363"/>
-</kw>
-<kw name="Click On Locator">
-<arg>${sizeL}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:58:58.364" endtime="20231128 22:58:58.381"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:58:58.381" level="INFO">Clicking element '//div[@class='filter-size attributeFilter category-filter']/ul[@style='display: block']/li[@data-column='i2' and @data-value='1747439']'.</msg>
-<status status="PASS" starttime="20231128 22:58:58.381" endtime="20231128 22:58:58.911"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:00.913" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:58:58.911" endtime="20231128 22:59:00.914"/>
-</kw>
-<status status="PASS" starttime="20231128 22:58:58.364" endtime="20231128 22:59:00.914"/>
-</kw>
-<kw name="Close Browser" library="Selenium2Library" type="TEARDOWN">
-<doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20231128 22:59:00.915" endtime="20231128 22:59:01.022"/>
-</kw>
-<status status="PASS" starttime="20231128 22:58:48.014" endtime="20231128 22:59:01.022"/>
-</test>
-<test id="s1-t3" name="Filter Color" line="41">
-<kw name="Open New Browser" type="SETUP">
-<arg>${url}</arg>
-<arg>${browser}</arg>
-<kw name="Open Browser" library="Selenium2Library">
-<arg>${url}</arg>
-<arg>${browser}</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20231128 22:59:01.023" level="INFO">Opening browser 'chrome' to base url 'https://jm.com.vn/'.</msg>
-<status status="PASS" starttime="20231128 22:59:01.023" endtime="20231128 22:59:03.750"/>
-</kw>
-<kw name="Maximize Browser Window" library="Selenium2Library">
-<doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20231128 22:59:03.750" endtime="20231128 22:59:04.163"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:06.164" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:04.163" endtime="20231128 22:59:06.164"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:01.023" endtime="20231128 22:59:06.164"/>
-</kw>
-<kw name="Input Value">
-<arg>${txtSearch}</arg>
-<arg>${key}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:06.165" endtime="20231128 22:59:06.193"/>
-</kw>
-<kw name="Capture Element Screenshot" library="Selenium2Library">
-<arg>${locator}</arg>
-<arg>EMBED</arg>
-<doc>Captures a screenshot from the element identified by ``locator`` and embeds it into log file.</doc>
-<msg timestamp="20231128 22:59:06.239" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;img alt="screenshot" class="robot-seleniumlibrary-screenshot" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAp8AAAAoCAYAAAC4uJHsAAATQUlEQVR4nO3de1RVZd7A8e85wOGqIiAiF7kEDiCkOFKmWSwVb2iSpKVrkpoZxYqamVJraZMtR6aymS6jY5PjDCtdZU5DjkjOoiDHgrhMNHMi5M6SW8MlLhPHA+K5vH/wnv2CoAhyMHt/n3/Es8/ez28/D2ftH8/tqMxmsxkhhBBCiO+4qKioGx2CGAPqGx2AEEIIIYT4/0OSTyGEEEIIMW4k+RRCCCGEEONGkk8hhBBCCDFuJPkUQgghhBDjRpJPIYQQQggxbiT5FEIIIYQQ40aSTyGEEEIIMW4k+RRCCCGEEONGkk8hhBBCCDFuJPkUQgghhBDjRpLPqzAYDOTm5lJfX3+jQ7np5ObmUlBQgNFovNGhCCGEEDeNhIQEnn766RsdhlVJ8nkVH3/8MR988AGTJk260aHcdLq6ujhx4gRFRUU3OhQhhBDipuDr68uuXbuYOHHijQ7FqmytcVGTyYTZbFb+r1KpUKtvjjzXbDZTW1uLo6MjdXV1/OQnP7muX4KvvvoKFxcXAgICxjDKoRUWFmJvb09ERAQ2NjZjfn2j0ThsW166dInGxkZmzpxJdXU1t9xyy5jHYXH+/Hl0Oh0RERFXfM/FixexsbHB1tYqv+pCCCFuEg4ODlc8ZjKZWLx4MV5eXqSmpo5JWQaDAYPBMOiYj48PbW1t9PT0KK+Fh4fj7+9PZGQkX375Jbt27bruGL7LrPJE/vOf/0xFRcWA19zc3Fi+fDmzZ8+2RpFj5v3336eoqAiDwUBSUtKokqe6ujo0Gg1eXl588803HDlyhG3btuHp6WmFiP9PdXU1Wq2W2NhYFi9ePKbX7u3t5dlnnyUqKooNGzYM+R6TycThw4eVaQpPPfUU7u7uYxpHfyqViiNHjpCQkMDtt98+4Fh1dTVvv/02Op0O6Puwr1u3Dm9vb6vFI4QQ4rsrLy/visfa29vZt28fTzzxBFOmTGHfvn2jLkej0ZCXl0dVVRXr1q0bcMzLy4uMjAzKysqUZ+n8+fM5cOAAZrOZ+vp61q5dO+qybxZWST4tvZ5JSUnY2NjQ1tbG6dOneeedd/D29rZ6EjZaDQ0NdHZ28tRTT1FTU0NBQQEBAQEj7kU8ePAg06ZN42c/+xkxMTH09vZSVlZm9fteu3YtZrOZ0NBQq5ZzJaWlpbi4uPDLX/6S3NxccnNzueeee6xWnr+/P5s2baKkpGRA8mk0Gjl69Ch2dnYkJibS29vL8ePHOXDgAHv37r1peuGFEEKMnZdeekn5+emnn0av17N//34AmpubOXPmDN7e3sTGxo5JeUM9a5qamjh69CiFhYXKe7Zu3Up6ejqpqam8/vrr3HvvvaSlpY1JDN9VVh2LtCRuAQEB1NbWkp+fT3d3N9A3ZPrJJ59QVlaGs7Mzc+fOZdmyZeh0On7zm98wd+5cmpqaqKqqwsPDg3Xr1uHv7z/g+hkZGXz++ecsWbKErKwsAOLj43F2dubEiRO0t7cTGRnJ/fffj06n47XXXiMmJoaYmBgAioqKOHXqFD/96U/x9fXF3t6eixcv8vLLL6NWq4mLi1MSz/3792Nvb8+0adP45z//CcDq1auJjo4eEFNKSgomk4nGxkaef/55duzYQW1tLT09Pdx1113Kddzd3SkqKsLNzY0f/ehHVFRU8PHHH9Pb28vy5cu56667BtVnQUEBhYWFNDY24unpSXx8PEFBQcq95OfnU19fT0NDAytXriQiIoKSkhLee+89Fi1axOeff05TUxNhYWGsXbt20FzW/fv34+DgQHBwMGfPnsVgMBAdHT0ggTSZTLz99tuUlJTg6OhIYmIi06dPB8DZ2Rmz2cyvfvUrpU0BpU3nzJlDQ0MDdXV1BAUFkZiYyPvvv09xcTEajYZNmzYp99Nfbm4u2dnZ9PT0MHfuXFQqFVqtlueee46mpiZKS0vR6XS4uLgAfQvF1q9fz7Rp05g8eTIA2dnZtLS0DJgOIoQQ4v+Pd999V/nZknz2fw0gLCyM4OBgZe7lD3/4QzIyMli1ahXQN7Lb2trKL37xC5ycnKiqquKhhx5Cr9dfsVwfHx+OHz+OSqUiMTGRBx54gJCQEHJycoC+xHfFihWsWbOG9vZ2ZfTwjTfeGFX5vr6+yiiun58f3t7e6HQ6UlJSyMzMBODZZ59l9erV2NraotVqMZvNREZGMn/+fAwGA48//jj33HMP7u7u6PV6/vSnP5Gamkp2djYODg4sXLgQk8kEQGZmJi4uLixYsOCa28KqXUB1dXVUV1fz4YcfUlhYiKenJ/7+/hiNRg4fPkxZWRmRkZGYTCays7MpKirCZDKh1+v55JNPaGhowM/Pj5aWFv74xz8Oun5XVxd6vZ6MjAx8fHzo6enh3XffJTU1FRcXFzQaDVqtlry8PIxGI3q9ngsXLijn6/V69Ho9ly5d4uLFi7z66qucP38eX19fbG1tOXnyJH/9618B6OjooKqqitzcXPz8/Ojt7eW9996jra1tQEyWXkeNRkNYWBi2tra0t7fT0dEx4DparVa5t4MHD3L69Gl8fHwwmUxkZGTQ1NQ04LoVFRWkpaXR3d3NnXfeSXt7O4cOHaK3t5empiaOHz9OZ2cns2bNorOzkyNHjtDR0UFPT49SR9A3/aG0tJS//e1vg+qzo6ODyspK/v73vzNlyhRltb8lsQfQarWUl5fj7e1NV1cXBw4cwGAwXFOb5uTkoNPpmDx5MlVVVaSkpFBaWoqfnx96vZ7Dhw8Piumrr77i5MmT6HQ6fH19yc/PJy8vT/mg6XQ69Hq98iEAsLe3Jzw8XEk809PTaWlpITIy0ipzYYUQQnw/TJ48GTs7OzQajfJzfHw8ra2t2NrasmXLFnbu3Iler8doNBISEsL27duveD1nZ2eOHTuGs7Mzr7zyCk1NTdjZ2SnPp3379rFkyRKMRiO1tbW4ublx8OBB1Gr1qMvXaDTY2dkxb948PD09aWtrY8KECaSkpADw8MMPk5CQgEajoa2tjaioKObMmYOdnR1qtZo77riDH//4x7i4uFBRUYGjoyNPPPEEoaGh1NfX4+TkxN133w2An58fnp6etLS0jKierZp8vvHGG7z55ptkZWVhMplYuHAhAK2trYSHh7NlyxY2bNjA1q1bAQbME3VwcGD37t089thjREZG0tvbS3Nz85DlPPjgg2zevJnly5djMpmIjIzk0UcfJTk5GYCqqqphY83Pz8dgMLB48WKSk5PZvXs3rq6ufPHFFwPet337djZv3sy9994L9A0195eQkIBarWbKlCncf//9aDSaIct75plneOSRR7jlllvo6elh/fr1bN68mdWrVwN9cxb7+/rrrwGIjY1l1apVPPTQQ8yaNYuuri6am5uJiori5z//ORs2bFD+QqqpqVHOj4iI4Mknn+SZZ57BwcGB8vLyK9ZFYmIijz32GDt37gTg008/VY7Z2tqye/dukpOTueOOO4C+XuxraVM3Nzd27NjB9u3bsbW1paenh23btvHII48QFhaGwWCgtbV1QCxnz54F+qZwPProoyPefuLUqVPk5OQQGBjIxo0bR3SuEEII8frrrxMXF8fp06dRqVRUVFSwdOlSkpKSAIiKihryPJVKxV/+8hcmTJhAamrqkEPpixYtwmAwcOeddxIfH88HH3yAjY2NktxdT/kGg4F58+YRGxtLTU0NNjY2REdHK8/C3bt3s3TpUh588MEB50VGRlJeXk5CQgIPPPCAEvfSpUs5duwYAGvWrAFQ5rSmp6dfW2X+L6sOu2/ZsgW1Ws1//vMf8vPzSUtLQ6VScdttt7Fq1Sry8vI4c+aM0ot18eJF5dzw8HBUKhUAQUFBFBcX89///pepU6cOKic4OBiAadOmATBjxgwAZY5lb2/vsLFakrvIyEgAbGxsCA8P57PPPqOxsRGACRMmKAtoAgMDAejs7BxJlQB9SZiTkxMA3t7eA1aF+/r6An2rxvubMWMGp0+f5tixYxQUFBAeHq785eLu7o6HhweZmZl0dHTwzTffAH31aW9vP+C+LLGXlpZiMpkGzUlRq9VK7+3EiROZOnUqzc3Nyn6dISEhSu9haGgoeXl5NDc3ExwcPGybWtpFrVbj7u5OV1eXspOAn58fpaWlg9rK8teepX7c3d1xdXW9pno3mUx8+umnTJ06laSkJJnrKYQQYsQsiVVxcTFxcXHKwiVL55TlOXs5S55QWVnJ7373u0HHAwIClB1kLMPhjo6OAKxYseK6y6+srFRGBb/44guCgoIICAhg0qRJyigr9I0wdnd3K2UfOnSI0tJSUlJS8PDwwM3NDejrxc3MzGTv3r3MmTMHgJiYGMxmM8ePH79aFQ5i1eQzMDAQGxsbgoKCCAsL48UXX6SwsJDp06fzyiuvoFarCQwMxM3Njdra2gHn9t8SYbihUkuSei36z/nrvwG6JTHp34iWGCwrpvv3Yl7P8O1Q8Vpeu9K9eHt78/jjj5OVlUVlZSU1NTVkZWWxY8cOtFotJ0+exMHBgcDAQCZOnDhoOkD/2K+WhKnV6gH3ZqkPS131bxfLMbPZTFNT07BtOlSiOxw7O7tBW1VcqTf5cgaDgenTpxMdHS2JpxBCiFG5/MtSRrJ2wGw2ExwcTEhICJWVlUNeZ6hRv+rqamU9xWjL7z8PtP9z1Gg0olarB0xX6398165d3HfffRgMBr7++mt0Op3SYQbwr3/9i+joaHx9ffH19aW2tvaqc16HMm5PZEsCZzablaw9OTmZpKQkZfjWmixJU0NDg/Ja/6FnS29f/9csP49mlXr/Rh0LlZWV1NXVsWnTJlJSUrj77rvp6enh3Llz5OTkoFaref7553n44Yeva29Ng8Gg1JHRaKSurg5bW9thEz5rtWlYWJgyrxX6PkzXOrdEo9GQnJw8aBsmIYQQwtrq6+t59dVXUalUHDp0aFAniGUxstFoZOPGjWzcuJEdO3ZQUlJCcXGx1eIqKyvDxsZGeU57eXkxYcIE5fjKlSsxm80sWLCANWvWUFJSMuD8d955B4AXXngBlUo14iF3sHLPZ1ZWFmq1mpaWFiX42bNnKyvez549i7+/P2fOnLFmGEBfd7Grqys1NTWkpaXR09MzYF5lSEgI0Ne93draSlNTE42Njfj7+ysTg6+Vm5sbzc3NFBcXM3PmzDGJv6WlhZMnT3L+/Hlmz55NXV0dAK6urjg5OdHW1saZM2cwGAzXXZ8HDx5k3rx5aLVaAGXV+tU4OzsDY9+m4eHh5Ofn89prrzFr1qwRfSAvXLjAb3/7W2JiYobcPUAIIYSwlkuXLnH06FFiY2OJjIzk17/+NXv37h3wnnPnzjFnzhwyMjLIzc0lLi4OZ2dnq2619OGHHzJ79mx+//vfU15erkyJs+ju7sbJyYk9e/bg4OAw6Pn5j3/8g0uXLhEREYHZbFbmgY6EVXo+LUPH2dnZfPTRR2i1WhwcHFi2bBkLFy5kwYIFTJ06Fa1WS3p6OrfddtuA80Zb3nBD1wkJCbi4uFBQUEBpaakyD1KlUuHk5MS2bdvw8PAgNzeX6upqZR/JkbJs5XT06FH0ev1V7+taY7/99tuJiopCq9Xy1ltv0draypIlS5gxYwbx8fFoNBoyMzM5e/Ys8+fPBwYOa/e/7tXicXNzIzQ0lJycHLq6uggKCiIuLm7Y2K+3Ta/0vtDQUJYuXYparUar1TJz5swht2MaitFoRKfTDZqCIIQQQgzHMrxtGcm8/N/hWN63detWuru7WbZs2aDOnCeffJKGhgZ8fHxYv349AG+++SZlZWWjLt9yfKjheUuy+NFHH2E2m/nBD35ATU2NMrpoMpl44YUXMBqNSs5m2V6yf7mW+aaW3tuRUplv4MaH3d3d2NjYXPMcvrFgMpno6uq64ve1m81mvv32WxwdHa8rLpPJxLfffsukSZNGnVQPxWAw0N3dPaCL3OLChQtKD+Ro7NmzB3t7e2X/M5VKpUxAvlbd3d1oNJox29Los88+o6KiguXLl+Pl5UVbWxsvvfQSDg4O7NmzZ9jzjUajbK8khBDfE1da2X2z8/DwwN7eXlngbE07d+4kOjqaF198kYKCAm699VbeeustZW9vCx8fnyHjcXBw4MSJE3h5efHcc89x6tSpEcdwQ7/wWqfT8fLLL7Ny5Uqlt9Da1Gr1FRNP6OuBu9rxkZTj6up63de5nK2t7ZCJJ3Bdiefl+k8uHomRJqvDmT59Ounp6Zw7dw6NRqOshrdsdTUcSTyFEEJ811l2qRkPeXl53HffffzhD38Y0EFz+XfaD5V4rlu3TtmGsby8fFSJJ3wHej4PHz7MokWLxmxupBi9f//739ja2hIREXGjQxngwoUL1NTU0NjYiJOTEzNnzrTqd8YLIYT4bvq+9nyON29vb1asWMGtt95KZ2cnaWlpfPnll8OeFxAQwNq1a8nJyVG+InQ0bmjyKYQQQghxrST5/H6QzQ+FEEIIIcS4keRTCCGEEEKMG0k+hRBCCCHEuJHkUwghhBBCjBtJPoUQQgghxLiR5FMIIYQQQowbST6FEEIIIcS4keRTCCGEEEKMG0k+hRBCCCHEuJHkUwghhBBCjBtJPoUQQgghxLj5H8H09uB2x5/PAAAAAElFTkSuQmCC" width="400px"&gt;</msg>
-<status status="PASS" starttime="20231128 22:59:06.193" endtime="20231128 22:59:06.239"/>
-</kw>
-<kw name="Input Text" library="Selenium2Library">
-<arg>${locator}</arg>
-<arg>${value}</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:06.239" level="INFO">Typing text 'Áo' into text field '//div[@class='wrapBoxSearch hidden-sm hidden-xs']//input[@placeholder='Bạn muốn tìm sản phẩm gì ?']'.</msg>
-<status status="PASS" starttime="20231128 22:59:06.239" endtime="20231128 22:59:06.295"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:08.296" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:06.295" endtime="20231128 22:59:08.297"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:06.164" endtime="20231128 22:59:08.297"/>
-</kw>
-<kw name="Click On Locator">
-<arg>${btnSearch}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:08.299" endtime="20231128 22:59:08.333"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:08.334" level="INFO">Clicking element '//button[contains(text(),'Tìm kiếm ngay')]'.</msg>
-<status status="PASS" starttime="20231128 22:59:08.333" endtime="20231128 22:59:09.194"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:11.197" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:09.194" endtime="20231128 22:59:11.197"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:08.298" endtime="20231128 22:59:11.198"/>
-</kw>
-<kw name="Click On Locator">
-<arg>${colorPink}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:11.199" endtime="20231128 22:59:11.231"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:11.232" level="INFO">Clicking element '//div[@class='filter-color attributeFilter category-filter']/ul[@style='display: block']/li[@data-column='i1' and @data-value='1849463']'.</msg>
-<status status="PASS" starttime="20231128 22:59:11.231" endtime="20231128 22:59:11.819"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:13.821" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:11.819" endtime="20231128 22:59:13.822"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:11.198" endtime="20231128 22:59:13.822"/>
-</kw>
-<kw name="Close Browser" library="Selenium2Library" type="TEARDOWN">
-<doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20231128 22:59:13.823" endtime="20231128 22:59:13.915"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:01.022" endtime="20231128 22:59:13.915"/>
-</test>
-<test id="s1-t4" name="Prod Favorite" line="46">
-<kw name="Open New Browser" type="SETUP">
-<arg>${url}</arg>
-<arg>${browser}</arg>
-<kw name="Open Browser" library="Selenium2Library">
-<arg>${url}</arg>
-<arg>${browser}</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20231128 22:59:13.916" level="INFO">Opening browser 'chrome' to base url 'https://jm.com.vn/'.</msg>
-<status status="PASS" starttime="20231128 22:59:13.916" endtime="20231128 22:59:16.944"/>
-</kw>
-<kw name="Maximize Browser Window" library="Selenium2Library">
-<doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20231128 22:59:16.944" endtime="20231128 22:59:17.348"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:19.350" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:17.349" endtime="20231128 22:59:19.350"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:13.916" endtime="20231128 22:59:19.351"/>
-</kw>
-<kw name="Click On Locator">
-<arg>${prodTop}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:19.353" endtime="20231128 22:59:19.395"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:19.395" level="INFO">Clicking element '//div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active'][1]'.</msg>
-<status status="PASS" starttime="20231128 22:59:19.395" endtime="20231128 22:59:20.579"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:22.580" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:20.579" endtime="20231128 22:59:22.580"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:19.352" endtime="20231128 22:59:22.581"/>
+<status status="PASS" starttime="20231217 22:47:23.005" endtime="20231217 22:47:26.501"/>
 </kw>
 <kw name="Get Text" library="Selenium2Library">
 <var>${prodName}</var>
 <arg>//h1[@class='title-head']</arg>
 <doc>Returns the text value of the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:22.613" level="INFO">${prodName} = Chân váy bút chì 2 nắp túi</msg>
-<status status="PASS" starttime="20231128 22:59:22.581" endtime="20231128 22:59:22.613"/>
+<msg timestamp="20231217 22:47:26.532" level="INFO">${prodName} = Áo len phối vạt lệch</msg>
+<status status="PASS" starttime="20231217 22:47:26.501" endtime="20231217 22:47:26.532"/>
+</kw>
+<kw name="Get WebElements" library="Selenium2Library">
+<var>@{colorList}</var>
+<arg>//span[@class='itemColor']</arg>
+<doc>Returns a list of WebElement objects matching the ``locator``.</doc>
+<msg timestamp="20231217 22:47:26.542" level="INFO">@{colorList} = [ &lt;selenium.webdriver.remote.webelement.WebElement (session="eae9a4e8986e7c69f7c7e8d9f92dd852", element="6C7C7D0E8C597A385278A20FEAD3209E_element_91")&gt; | &lt;selenium.webdriver.remote.webelement.WebEleme...</msg>
+<status status="PASS" starttime="20231217 22:47:26.532" endtime="20231217 22:47:26.542"/>
+</kw>
+<for flavor="IN">
+<var>${color}</var>
+<value>@{colorList}</value>
+<iter>
+<var name="${color}">&lt;selenium.webdriver.remote.webelement.WebElement (session="eae9a4e8986e7c69f7c7e8d9f92dd852", element="6C7C7D0E8C597A385278A20FEAD3209E_element_91")&gt;</var>
+<kw name="Log" library="BuiltIn">
+<arg>${color}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:26.542" level="INFO">&lt;selenium.webdriver.remote.webelement.WebElement (session="eae9a4e8986e7c69f7c7e8d9f92dd852", element="6C7C7D0E8C597A385278A20FEAD3209E_element_91")&gt;</msg>
+<status status="PASS" starttime="20231217 22:47:26.542" endtime="20231217 22:47:26.543"/>
 </kw>
 <kw name="Click On Locator">
-<arg>${btnAddFavorite}</arg>
+<arg>${color}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:26.549" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:26.543" endtime="20231217 22:47:26.549"/>
+</kw>
+<msg timestamp="20231217 22:47:26.549" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:26.543" endtime="20231217 22:47:26.549"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:26.549" endtime="20231217 22:47:26.549"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:26.549" endtime="20231217 22:47:26.549"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:26.549" endtime="20231217 22:47:26.549"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:26.549" endtime="20231217 22:47:26.549"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:26.543" endtime="20231217 22:47:26.549"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:26.549" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:26.560" level="INFO">${showCart} = display: none;</msg>
+<status status="PASS" starttime="20231217 22:47:26.549" endtime="20231217 22:47:26.560"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:26.560" endtime="20231217 22:47:26.560"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:26.560" endtime="20231217 22:47:26.560"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:26.560" endtime="20231217 22:47:26.560"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:26.549" endtime="20231217 22:47:26.560"/>
+</kw>
 <kw name="Wait Until Element Is Enabled" library="Selenium2Library">
 <arg>${locator}</arg>
 <doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:22.613" endtime="20231128 22:59:22.636"/>
+<status status="PASS" starttime="20231217 22:47:26.561" endtime="20231217 22:47:26.569"/>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <arg>${locator}</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:22.637" level="INFO">Clicking element '//a[@title='Thêm vào yêu thích']'.</msg>
-<status status="PASS" starttime="20231128 22:59:22.636" endtime="20231128 22:59:22.661"/>
+<msg timestamp="20231217 22:47:26.569" level="INFO">Clicking element '&lt;selenium.webdriver.remote.webelement.WebElement (session="eae9a4e8986e7c69f7c7e8d9f92dd852", element="6C7C7D0E8C597A385278A20FEAD3209E_element_91")&gt;'.</msg>
+<status status="PASS" starttime="20231217 22:47:26.569" endtime="20231217 22:47:26.592"/>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <arg>${sleep}</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:24.664" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:22.661" endtime="20231128 22:59:24.664"/>
+<msg timestamp="20231217 22:47:28.593" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:26.592" endtime="20231217 22:47:28.594"/>
 </kw>
-<status status="PASS" starttime="20231128 22:59:22.613" endtime="20231128 22:59:24.664"/>
+<status status="PASS" starttime="20231217 22:47:26.543" endtime="20231217 22:47:28.594"/>
 </kw>
-<kw name="Handle Alert" library="Selenium2Library">
-<arg>ACCEPT</arg>
-<doc>Handles the current alert and returns its message.</doc>
-<msg timestamp="20231128 22:59:24.666" level="INFO">HANDLE::&lt;class 'NoneType'&gt;::None</msg>
-<status status="PASS" starttime="20231128 22:59:24.665" endtime="20231128 22:59:24.673"/>
+<kw name="Set Variable" library="BuiltIn">
+<var>@{sizeList}</var>
+<arg>L</arg>
+<arg>M</arg>
+<arg>S</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:28.595" level="INFO">@{sizeList} = [ L | M | S ]</msg>
+<status status="PASS" starttime="20231217 22:47:28.594" endtime="20231217 22:47:28.595"/>
 </kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:26.674" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:24.673" endtime="20231128 22:59:26.675"/>
+<for flavor="IN">
+<var>${size}</var>
+<value>@{sizeList}</value>
+<iter>
+<var name="${size}">L</var>
+<kw name="Set Variable" library="BuiltIn">
+<var>${size}</var>
+<arg>//p[@class='size req']/a[contains(text(),'${size}')]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:28.596" level="INFO">${size} = //p[@class='size req']/a[contains(text(),'L')]</msg>
+<status status="PASS" starttime="20231217 22:47:28.596" endtime="20231217 22:47:28.596"/>
 </kw>
+<kw name="Log" library="BuiltIn">
+<arg>${size}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:28.596" level="INFO">//p[@class='size req']/a[contains(text(),'L')]</msg>
+<status status="PASS" starttime="20231217 22:47:28.596" endtime="20231217 22:47:28.596"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${checkOutStock}</var>
+<arg>${size}</arg>
+<arg>title</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:28.596" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:28.624" level="INFO">${checkOutStock} = </msg>
+<status status="PASS" starttime="20231217 22:47:28.597" endtime="20231217 22:47:28.624"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${checkOutStock}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:28.624" level="INFO"/>
+<status status="PASS" starttime="20231217 22:47:28.624" endtime="20231217 22:47:28.624"/>
+</kw>
+<if>
+<branch type="IF" condition="'${checkOutStock}' != 'Sản phẩm tạm thời hết hàng!'">
 <kw name="Click On Locator">
-<arg>${btnWishList}</arg>
+<arg>${size}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:28.633" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:28.625" endtime="20231217 22:47:28.633"/>
+</kw>
+<msg timestamp="20231217 22:47:28.633" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:28.625" endtime="20231217 22:47:28.633"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:28.633" endtime="20231217 22:47:28.633"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:28.634" endtime="20231217 22:47:28.634"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:28.633" endtime="20231217 22:47:28.634"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:28.633" endtime="20231217 22:47:28.634"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:28.625" endtime="20231217 22:47:28.634"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:28.634" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:28.652" level="INFO">${showCart} = display: none;</msg>
+<status status="PASS" starttime="20231217 22:47:28.634" endtime="20231217 22:47:28.652"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:28.653" endtime="20231217 22:47:28.653"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:28.652" endtime="20231217 22:47:28.653"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:28.652" endtime="20231217 22:47:28.653"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:28.634" endtime="20231217 22:47:28.653"/>
+</kw>
 <kw name="Wait Until Element Is Enabled" library="Selenium2Library">
 <arg>${locator}</arg>
 <doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:26.676" endtime="20231128 22:59:26.708"/>
+<status status="PASS" starttime="20231217 22:47:28.653" endtime="20231217 22:47:28.665"/>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <arg>${locator}</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:26.709" level="INFO">Clicking element '//div[@class='iconHeader col-lg-2 col-md-2']//a[@aria-label='wishlist']'.</msg>
-<status status="PASS" starttime="20231128 22:59:26.708" endtime="20231128 22:59:27.111"/>
+<msg timestamp="20231217 22:47:28.666" level="INFO">Clicking element '//p[@class='size req']/a[contains(text(),'L')]'.</msg>
+<status status="PASS" starttime="20231217 22:47:28.665" endtime="20231217 22:47:28.687"/>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <arg>${sleep}</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:29.112" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:27.111" endtime="20231128 22:59:29.113"/>
+<msg timestamp="20231217 22:47:30.689" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:28.687" endtime="20231217 22:47:30.690"/>
 </kw>
-<status status="PASS" starttime="20231128 22:59:26.675" endtime="20231128 22:59:29.113"/>
-</kw>
-<kw name="Page Should Contain" library="Selenium2Library">
-<arg>${prodName}</arg>
-<doc>Verifies that current page contains ``text``.</doc>
-<msg timestamp="20231128 22:59:29.137" level="INFO">Current page contains text 'Chân váy bút chì 2 nắp túi'.</msg>
-<status status="PASS" starttime="20231128 22:59:29.114" endtime="20231128 22:59:29.137"/>
-</kw>
-<kw name="Click On Locator">
-<arg>(//a[contains(text(),'${prodName}')])[1]/parent::*/parent::*//a[@class='removeFav']</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:29.138" endtime="20231128 22:59:29.160"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:29.161" level="INFO">Clicking element '(//a[contains(text(),'Chân váy bút chì 2 nắp túi')])[1]/parent::*/parent::*//a[@class='removeFav']'.</msg>
-<status status="PASS" starttime="20231128 22:59:29.160" endtime="20231128 22:59:29.195"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:31.198" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:29.195" endtime="20231128 22:59:31.199"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:29.138" endtime="20231128 22:59:31.199"/>
-</kw>
-<kw name="Handle Alert" library="Selenium2Library">
-<arg>ACCEPT</arg>
-<doc>Handles the current alert and returns its message.</doc>
-<msg timestamp="20231128 22:59:31.200" level="INFO">HANDLE::&lt;class 'NoneType'&gt;::None</msg>
-<status status="PASS" starttime="20231128 22:59:31.199" endtime="20231128 22:59:31.206"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:33.208" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:31.206" endtime="20231128 22:59:33.208"/>
-</kw>
-<kw name="Page Should Not Contain" library="Selenium2Library">
-<arg>${prodName}</arg>
-<doc>Verifies the current page does not contain ``text``.</doc>
-<msg timestamp="20231128 22:59:33.235" level="INFO">Current page does not contain text 'Chân váy bút chì 2 nắp túi'.</msg>
-<status status="PASS" starttime="20231128 22:59:33.209" endtime="20231128 22:59:33.235"/>
-</kw>
-<kw name="Close Browser" library="Selenium2Library" type="TEARDOWN">
-<doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20231128 22:59:33.235" endtime="20231128 22:59:33.351"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:13.915" endtime="20231128 22:59:33.351"/>
-</test>
-<test id="s1-t5" name="Add to Cart" line="61">
-<kw name="Open New Browser" type="SETUP">
-<arg>${url}</arg>
-<arg>${browser}</arg>
-<kw name="Open Browser" library="Selenium2Library">
-<arg>${url}</arg>
-<arg>${browser}</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20231128 22:59:33.352" level="INFO">Opening browser 'chrome' to base url 'https://jm.com.vn/'.</msg>
-<status status="PASS" starttime="20231128 22:59:33.352" endtime="20231128 22:59:36.091"/>
-</kw>
-<kw name="Maximize Browser Window" library="Selenium2Library">
-<doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20231128 22:59:36.092" endtime="20231128 22:59:36.512"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:38.514" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:36.512" endtime="20231128 22:59:38.514"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:33.352" endtime="20231128 22:59:38.515"/>
-</kw>
-<kw name="Click On Locator">
-<arg>${prodTop}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:38.517" endtime="20231128 22:59:38.558"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:38.559" level="INFO">Clicking element '//div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active'][1]'.</msg>
-<status status="PASS" starttime="20231128 22:59:38.558" endtime="20231128 22:59:39.918"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:41.921" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:39.918" endtime="20231128 22:59:41.921"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:38.515" endtime="20231128 22:59:41.921"/>
-</kw>
-<kw name="Get Text" library="Selenium2Library">
-<var>${prodName}</var>
-<arg>//h1[@class='title-head']</arg>
-<doc>Returns the text value of the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:41.953" level="INFO">${prodName} = Chân váy bút chì 2 nắp túi</msg>
-<status status="PASS" starttime="20231128 22:59:41.922" endtime="20231128 22:59:41.953"/>
-</kw>
-<kw name="Click On Locator">
-<arg>${selectColor}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:41.954" endtime="20231128 22:59:41.976"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:41.977" level="INFO">Clicking element '//div[@class='colorPicker clearfix']//span[1]'.</msg>
-<status status="PASS" starttime="20231128 22:59:41.976" endtime="20231128 22:59:42.007"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:44.008" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:42.007" endtime="20231128 22:59:44.009"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:41.954" endtime="20231128 22:59:44.009"/>
-</kw>
-<kw name="Click On Locator">
-<arg>${selectSize}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:44.011" endtime="20231128 22:59:44.043"/>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:44.043" level="INFO">Clicking element '//div[@class='sizePicker clearfix']//a[contains(text(),'L')]'.</msg>
-<status status="PASS" starttime="20231128 22:59:44.043" endtime="20231128 22:59:44.074"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:46.075" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:44.074" endtime="20231128 22:59:46.075"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:44.010" endtime="20231128 22:59:46.076"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:48.078" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:46.076" endtime="20231128 22:59:48.078"/>
+<status status="PASS" starttime="20231217 22:47:28.624" endtime="20231217 22:47:30.690"/>
 </kw>
 <kw name="Get Element Attribute" library="Selenium2Library">
 <var>${quatity}</var>
 <arg>${txtQuantity}</arg>
 <arg>max</arg>
 <doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
-<msg timestamp="20231128 22:59:48.108" level="INFO">${quatity} = 13</msg>
-<status status="PASS" starttime="20231128 22:59:48.079" endtime="20231128 22:59:48.108"/>
+<msg timestamp="20231217 22:47:30.690" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:30.716" level="INFO">${quatity} = 1</msg>
+<status status="PASS" starttime="20231217 22:47:30.690" endtime="20231217 22:47:30.716"/>
 </kw>
 <if>
 <branch type="IF" condition="${quatity} &gt; 5">
 <kw name="Click On Locator">
 <arg>${btnPushQuantity}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:48.109" endtime="20231128 22:59:48.131"/>
+<status status="NOT RUN" starttime="20231217 22:47:30.717" endtime="20231217 22:47:30.717"/>
 </kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:48.131" level="INFO">Clicking element '//button[@class='btn-cts btn-plus-view']'.</msg>
-<status status="PASS" starttime="20231128 22:59:48.131" endtime="20231128 22:59:48.153"/>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:30.717" endtime="20231217 22:47:30.717"/>
 </kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:50.154" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:48.153" endtime="20231128 22:59:50.154"/>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:30.717" endtime="20231217 22:47:30.717"/>
 </kw>
-<status status="PASS" starttime="20231128 22:59:48.109" endtime="20231128 22:59:50.155"/>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:30.717" endtime="20231217 22:47:30.717"/>
 </kw>
 <kw name="Click On Locator">
-<arg>${btnBuyNow}</arg>
-<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Waits until the element ``locator`` is enabled.</doc>
-<status status="PASS" starttime="20231128 22:59:50.155" endtime="20231128 22:59:50.186"/>
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:30.717" endtime="20231217 22:47:30.717"/>
 </kw>
-<kw name="Click Element" library="Selenium2Library">
-<arg>${locator}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20231128 22:59:50.187" level="INFO">Clicking element '//button[@id='buyNow']'.</msg>
-<status status="PASS" starttime="20231128 22:59:50.186" endtime="20231128 22:59:50.219"/>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<arg>${sleep}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20231128 22:59:52.221" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20231128 22:59:50.219" endtime="20231128 22:59:52.221"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:50.155" endtime="20231128 22:59:52.222"/>
-</kw>
-<status status="PASS" starttime="20231128 22:59:48.109" endtime="20231128 22:59:52.222"/>
+<status status="NOT RUN" starttime="20231217 22:47:30.716" endtime="20231217 22:47:30.717"/>
 </branch>
 <branch type="ELSE">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:30.717" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:30.732" level="INFO">${quatity} = 1</msg>
+<status status="PASS" starttime="20231217 22:47:30.717" endtime="20231217 22:47:30.732"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:30.745" level="INFO">${price} = 565,000đ</msg>
+<status status="PASS" starttime="20231217 22:47:30.732" endtime="20231217 22:47:30.746"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:30.746" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:30.759" level="INFO">${prodId} = 40764764</msg>
+<status status="PASS" starttime="20231217 22:47:30.746" endtime="20231217 22:47:30.759"/>
+</kw>
 <kw name="Click On Locator">
-<arg>${btnBuyNow}</arg>
-<status status="NOT RUN" starttime="20231128 22:59:52.222" endtime="20231128 22:59:52.222"/>
+<arg>${btnQuickCart}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:30.763" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:30.759" endtime="20231217 22:47:30.763"/>
 </kw>
-<status status="NOT RUN" starttime="20231128 22:59:52.222" endtime="20231128 22:59:52.222"/>
+<msg timestamp="20231217 22:47:30.763" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:30.759" endtime="20231217 22:47:30.763"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:30.763" endtime="20231217 22:47:30.763"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:30.763" endtime="20231217 22:47:30.763"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:30.763" endtime="20231217 22:47:30.763"/>
 </branch>
-<status status="PASS" starttime="20231128 22:59:48.109" endtime="20231128 22:59:52.222"/>
+<status status="PASS" starttime="20231217 22:47:30.763" endtime="20231217 22:47:30.763"/>
 </if>
-<kw name="Page Should Contain" library="Selenium2Library">
-<arg>${prodName}</arg>
-<doc>Verifies that current page contains ``text``.</doc>
-<msg timestamp="20231128 22:59:52.245" level="INFO">Current page contains text 'Chân váy bút chì 2 nắp túi'.</msg>
-<status status="PASS" starttime="20231128 22:59:52.223" endtime="20231128 22:59:52.245"/>
+<status status="PASS" starttime="20231217 22:47:30.759" endtime="20231217 22:47:30.763"/>
 </kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:30.764" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:30.772" level="INFO">${showCart} = display: none;</msg>
+<status status="PASS" starttime="20231217 22:47:30.764" endtime="20231217 22:47:30.772"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:30.772" endtime="20231217 22:47:30.772"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:30.772" endtime="20231217 22:47:30.772"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:30.772" endtime="20231217 22:47:30.772"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:30.764" endtime="20231217 22:47:30.772"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:30.772" endtime="20231217 22:47:30.782"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:30.783" level="INFO">Clicking element '//button[@id='addQuickCart']'.</msg>
+<status status="PASS" starttime="20231217 22:47:30.782" endtime="20231217 22:47:30.802"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:32.805" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:30.802" endtime="20231217 22:47:32.805"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:30.759" endtime="20231217 22:47:32.805"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:30.717" endtime="20231217 22:47:32.805"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:30.716" endtime="20231217 22:47:32.805"/>
+</if>
+<kw name="Append To List" library="Collections">
+<arg>${prodNameList}</arg>
+<arg>${prodName}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:32.806" endtime="20231217 22:47:32.806"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${prodIdList}</arg>
+<arg>${prodId}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:32.806" endtime="20231217 22:47:32.806"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${priceProdList}</arg>
+<arg>${price}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:32.807" endtime="20231217 22:47:32.807"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${quatityProdList}</arg>
+<arg>${quatity}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:32.807" endtime="20231217 22:47:32.807"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:28.624" endtime="20231217 22:47:32.807"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:28.624" endtime="20231217 22:47:32.807"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:28.596" endtime="20231217 22:47:32.807"/>
+</iter>
+<iter>
+<var name="${size}">M</var>
+<kw name="Set Variable" library="BuiltIn">
+<var>${size}</var>
+<arg>//p[@class='size req']/a[contains(text(),'${size}')]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:32.808" level="INFO">${size} = //p[@class='size req']/a[contains(text(),'M')]</msg>
+<status status="PASS" starttime="20231217 22:47:32.807" endtime="20231217 22:47:32.808"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${size}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:32.808" level="INFO">//p[@class='size req']/a[contains(text(),'M')]</msg>
+<status status="PASS" starttime="20231217 22:47:32.808" endtime="20231217 22:47:32.808"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${checkOutStock}</var>
+<arg>${size}</arg>
+<arg>title</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:32.808" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:32.831" level="INFO">${checkOutStock} = </msg>
+<status status="PASS" starttime="20231217 22:47:32.808" endtime="20231217 22:47:32.831"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${checkOutStock}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:32.831" level="INFO"/>
+<status status="PASS" starttime="20231217 22:47:32.831" endtime="20231217 22:47:32.831"/>
+</kw>
+<if>
+<branch type="IF" condition="'${checkOutStock}' != 'Sản phẩm tạm thời hết hàng!'">
+<kw name="Click On Locator">
+<arg>${size}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:32.839" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:32.832" endtime="20231217 22:47:32.839"/>
+</kw>
+<msg timestamp="20231217 22:47:32.839" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:32.832" endtime="20231217 22:47:32.839"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:32.839" endtime="20231217 22:47:32.839"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:32.839" endtime="20231217 22:47:32.839"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:32.839" endtime="20231217 22:47:32.839"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:32.839" endtime="20231217 22:47:32.839"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:32.832" endtime="20231217 22:47:32.839"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:32.840" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:32.851" level="INFO">${showCart} = </msg>
+<status status="PASS" starttime="20231217 22:47:32.840" endtime="20231217 22:47:32.851"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:32.851" endtime="20231217 22:47:32.851"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:32.851" endtime="20231217 22:47:32.851"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:32.851" endtime="20231217 22:47:32.851"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:32.840" endtime="20231217 22:47:32.851"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:32.851" endtime="20231217 22:47:32.865"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:32.865" level="INFO">Clicking element '//p[@class='size req']/a[contains(text(),'M')]'.</msg>
+<status status="PASS" starttime="20231217 22:47:32.865" endtime="20231217 22:47:32.885"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:34.888" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:32.885" endtime="20231217 22:47:34.888"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:32.831" endtime="20231217 22:47:34.888"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>max</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:34.889" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:34.910" level="INFO">${quatity} = 1</msg>
+<status status="PASS" starttime="20231217 22:47:34.889" endtime="20231217 22:47:34.910"/>
+</kw>
+<if>
+<branch type="IF" condition="${quatity} &gt; 5">
+<kw name="Click On Locator">
+<arg>${btnPushQuantity}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:34.911" endtime="20231217 22:47:34.911"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:34.911" endtime="20231217 22:47:34.911"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:34.911" endtime="20231217 22:47:34.911"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:34.911" endtime="20231217 22:47:34.911"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:34.911" endtime="20231217 22:47:34.911"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:34.911" endtime="20231217 22:47:34.911"/>
+</branch>
+<branch type="ELSE">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:34.911" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:34.926" level="INFO">${quatity} = 1</msg>
+<status status="PASS" starttime="20231217 22:47:34.912" endtime="20231217 22:47:34.926"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:34.938" level="INFO">${price} = 565,000đ</msg>
+<status status="PASS" starttime="20231217 22:47:34.926" endtime="20231217 22:47:34.938"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:34.938" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:34.949" level="INFO">${prodId} = 40764763</msg>
+<status status="PASS" starttime="20231217 22:47:34.938" endtime="20231217 22:47:34.949"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:34.954" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:34.949" endtime="20231217 22:47:34.954"/>
+</kw>
+<msg timestamp="20231217 22:47:34.954" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:34.949" endtime="20231217 22:47:34.954"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:34.954" endtime="20231217 22:47:34.954"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:34.954" endtime="20231217 22:47:34.954"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:34.954" endtime="20231217 22:47:34.954"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:34.954" endtime="20231217 22:47:34.954"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:34.949" endtime="20231217 22:47:34.954"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:34.955" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:34.964" level="INFO">${showCart} = display: none;</msg>
+<status status="PASS" starttime="20231217 22:47:34.955" endtime="20231217 22:47:34.964"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:34.964" endtime="20231217 22:47:34.964"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:34.964" endtime="20231217 22:47:34.964"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:34.964" endtime="20231217 22:47:34.964"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:34.954" endtime="20231217 22:47:34.964"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:34.964" endtime="20231217 22:47:34.974"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:34.975" level="INFO">Clicking element '//button[@id='addQuickCart']'.</msg>
+<status status="PASS" starttime="20231217 22:47:34.975" endtime="20231217 22:47:34.992"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:36.993" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:34.992" endtime="20231217 22:47:36.993"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:34.949" endtime="20231217 22:47:36.994"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:34.911" endtime="20231217 22:47:36.994"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:34.911" endtime="20231217 22:47:36.994"/>
+</if>
+<kw name="Append To List" library="Collections">
+<arg>${prodNameList}</arg>
+<arg>${prodName}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:36.994" endtime="20231217 22:47:36.995"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${prodIdList}</arg>
+<arg>${prodId}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:36.995" endtime="20231217 22:47:36.996"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${priceProdList}</arg>
+<arg>${price}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:36.996" endtime="20231217 22:47:36.997"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${quatityProdList}</arg>
+<arg>${quatity}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:36.997" endtime="20231217 22:47:36.997"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:32.831" endtime="20231217 22:47:36.998"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:32.831" endtime="20231217 22:47:36.998"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:32.807" endtime="20231217 22:47:36.998"/>
+</iter>
+<iter>
+<var name="${size}">S</var>
+<kw name="Set Variable" library="BuiltIn">
+<var>${size}</var>
+<arg>//p[@class='size req']/a[contains(text(),'${size}')]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:36.999" level="INFO">${size} = //p[@class='size req']/a[contains(text(),'S')]</msg>
+<status status="PASS" starttime="20231217 22:47:36.998" endtime="20231217 22:47:36.999"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${size}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:36.999" level="INFO">//p[@class='size req']/a[contains(text(),'S')]</msg>
+<status status="PASS" starttime="20231217 22:47:36.999" endtime="20231217 22:47:37.000"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${checkOutStock}</var>
+<arg>${size}</arg>
+<arg>title</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:37.000" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:37.025" level="INFO">${checkOutStock} = Sản phẩm tạm thời hết hàng!</msg>
+<status status="PASS" starttime="20231217 22:47:37.000" endtime="20231217 22:47:37.025"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${checkOutStock}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:37.025" level="INFO">Sản phẩm tạm thời hết hàng!</msg>
+<status status="PASS" starttime="20231217 22:47:37.025" endtime="20231217 22:47:37.026"/>
+</kw>
+<if>
+<branch type="IF" condition="'${checkOutStock}' != 'Sản phẩm tạm thời hết hàng!'">
+<kw name="Click On Locator">
+<arg>${size}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.026"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>max</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.026"/>
+</kw>
+<if>
+<branch type="IF" condition="${quatity} &gt; 5">
+<kw name="Click On Locator">
+<arg>${btnPushQuantity}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.026"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.026"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.026"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.027"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:37.027" endtime="20231217 22:47:37.027"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.027"/>
+</branch>
+<branch type="ELSE">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.027" endtime="20231217 22:47:37.027"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.027" endtime="20231217 22:47:37.027"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.027" endtime="20231217 22:47:37.027"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:37.027" endtime="20231217 22:47:37.027"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:37.027" endtime="20231217 22:47:37.027"/>
+</branch>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.027"/>
+</if>
+<kw name="Append To List" library="Collections">
+<arg>${prodNameList}</arg>
+<arg>${prodName}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.027" endtime="20231217 22:47:37.027"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${prodIdList}</arg>
+<arg>${prodId}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.027" endtime="20231217 22:47:37.027"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${priceProdList}</arg>
+<arg>${price}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.028" endtime="20231217 22:47:37.028"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${quatityProdList}</arg>
+<arg>${quatity}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.028" endtime="20231217 22:47:37.028"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.028"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:37.026" endtime="20231217 22:47:37.028"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:36.998" endtime="20231217 22:47:37.028"/>
+</iter>
+<status status="PASS" starttime="20231217 22:47:28.595" endtime="20231217 22:47:37.028"/>
+</for>
+<status status="PASS" starttime="20231217 22:47:26.542" endtime="20231217 22:47:37.028"/>
+</iter>
+<iter>
+<var name="${color}">&lt;selenium.webdriver.remote.webelement.WebElement (session="eae9a4e8986e7c69f7c7e8d9f92dd852", element="6C7C7D0E8C597A385278A20FEAD3209E_element_92")&gt;</var>
+<kw name="Log" library="BuiltIn">
+<arg>${color}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:37.028" level="INFO">&lt;selenium.webdriver.remote.webelement.WebElement (session="eae9a4e8986e7c69f7c7e8d9f92dd852", element="6C7C7D0E8C597A385278A20FEAD3209E_element_92")&gt;</msg>
+<status status="PASS" starttime="20231217 22:47:37.028" endtime="20231217 22:47:37.028"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${color}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:37.036" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:37.029" endtime="20231217 22:47:37.036"/>
+</kw>
+<msg timestamp="20231217 22:47:37.036" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:37.029" endtime="20231217 22:47:37.036"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.037" endtime="20231217 22:47:37.037"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:37.037" endtime="20231217 22:47:37.037"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:37.036" endtime="20231217 22:47:37.037"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:37.036" endtime="20231217 22:47:37.037"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:37.029" endtime="20231217 22:47:37.037"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:37.037" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:37.049" level="INFO">${showCart} = display: block;</msg>
+<status status="PASS" starttime="20231217 22:47:37.037" endtime="20231217 22:47:37.049"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:37.049" level="INFO">Clicking element '//a[@class='cartBtnOpen']'.</msg>
+<status status="PASS" starttime="20231217 22:47:37.049" endtime="20231217 22:47:37.075"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:37.049" endtime="20231217 22:47:37.075"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:37.049" endtime="20231217 22:47:37.075"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:37.037" endtime="20231217 22:47:37.075"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:37.075" endtime="20231217 22:47:37.083"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:37.083" level="INFO">Clicking element '&lt;selenium.webdriver.remote.webelement.WebElement (session="eae9a4e8986e7c69f7c7e8d9f92dd852", element="6C7C7D0E8C597A385278A20FEAD3209E_element_92")&gt;'.</msg>
+<status status="PASS" starttime="20231217 22:47:37.083" endtime="20231217 22:47:37.102"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:39.103" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:37.102" endtime="20231217 22:47:39.103"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:37.029" endtime="20231217 22:47:39.104"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>@{sizeList}</var>
+<arg>L</arg>
+<arg>M</arg>
+<arg>S</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:39.105" level="INFO">@{sizeList} = [ L | M | S ]</msg>
+<status status="PASS" starttime="20231217 22:47:39.104" endtime="20231217 22:47:39.105"/>
+</kw>
+<for flavor="IN">
+<var>${size}</var>
+<value>@{sizeList}</value>
+<iter>
+<var name="${size}">L</var>
+<kw name="Set Variable" library="BuiltIn">
+<var>${size}</var>
+<arg>//p[@class='size req']/a[contains(text(),'${size}')]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:39.106" level="INFO">${size} = //p[@class='size req']/a[contains(text(),'L')]</msg>
+<status status="PASS" starttime="20231217 22:47:39.106" endtime="20231217 22:47:39.106"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${size}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:39.106" level="INFO">//p[@class='size req']/a[contains(text(),'L')]</msg>
+<status status="PASS" starttime="20231217 22:47:39.106" endtime="20231217 22:47:39.106"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${checkOutStock}</var>
+<arg>${size}</arg>
+<arg>title</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:39.107" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:39.127" level="INFO">${checkOutStock} = </msg>
+<status status="PASS" starttime="20231217 22:47:39.107" endtime="20231217 22:47:39.127"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${checkOutStock}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:39.128" level="INFO"/>
+<status status="PASS" starttime="20231217 22:47:39.127" endtime="20231217 22:47:39.128"/>
+</kw>
+<if>
+<branch type="IF" condition="'${checkOutStock}' != 'Sản phẩm tạm thời hết hàng!'">
+<kw name="Click On Locator">
+<arg>${size}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:39.137" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:39.130" endtime="20231217 22:47:39.137"/>
+</kw>
+<msg timestamp="20231217 22:47:39.137" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:39.129" endtime="20231217 22:47:39.137"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:39.138" endtime="20231217 22:47:39.138"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:39.138" endtime="20231217 22:47:39.138"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:39.137" endtime="20231217 22:47:39.138"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:39.137" endtime="20231217 22:47:39.138"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:39.128" endtime="20231217 22:47:39.138"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:39.138" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:39.151" level="INFO">${showCart} = display: none;</msg>
+<status status="PASS" starttime="20231217 22:47:39.138" endtime="20231217 22:47:39.151"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:39.151" endtime="20231217 22:47:39.151"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:39.151" endtime="20231217 22:47:39.151"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:39.151" endtime="20231217 22:47:39.151"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:39.138" endtime="20231217 22:47:39.151"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:39.151" endtime="20231217 22:47:39.166"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:39.166" level="INFO">Clicking element '//p[@class='size req']/a[contains(text(),'L')]'.</msg>
+<status status="PASS" starttime="20231217 22:47:39.166" endtime="20231217 22:47:39.186"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:41.187" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:39.186" endtime="20231217 22:47:41.187"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:39.128" endtime="20231217 22:47:41.187"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>max</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:41.187" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:41.197" level="INFO">${quatity} = 1</msg>
+<status status="PASS" starttime="20231217 22:47:41.187" endtime="20231217 22:47:41.197"/>
+</kw>
+<if>
+<branch type="IF" condition="${quatity} &gt; 5">
+<kw name="Click On Locator">
+<arg>${btnPushQuantity}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:41.198" endtime="20231217 22:47:41.198"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:41.198" endtime="20231217 22:47:41.198"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:41.198" endtime="20231217 22:47:41.198"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:41.198" endtime="20231217 22:47:41.198"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:41.198" endtime="20231217 22:47:41.198"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:41.198" endtime="20231217 22:47:41.198"/>
+</branch>
+<branch type="ELSE">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:41.198" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:41.207" level="INFO">${quatity} = 1</msg>
+<status status="PASS" starttime="20231217 22:47:41.198" endtime="20231217 22:47:41.207"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:41.216" level="INFO">${price} = 565,000đ</msg>
+<status status="PASS" starttime="20231217 22:47:41.207" endtime="20231217 22:47:41.216"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:41.216" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:41.223" level="INFO">${prodId} = 40764740</msg>
+<status status="PASS" starttime="20231217 22:47:41.216" endtime="20231217 22:47:41.223"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:41.227" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:41.224" endtime="20231217 22:47:41.237"/>
+</kw>
+<msg timestamp="20231217 22:47:41.237" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:41.223" endtime="20231217 22:47:41.237"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:41.237" endtime="20231217 22:47:41.237"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:41.237" endtime="20231217 22:47:41.237"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:41.237" endtime="20231217 22:47:41.237"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:41.237" endtime="20231217 22:47:41.237"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:41.223" endtime="20231217 22:47:41.237"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:41.237" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:41.245" level="INFO">${showCart} = display: none;</msg>
+<status status="PASS" starttime="20231217 22:47:41.237" endtime="20231217 22:47:41.245"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:41.245" endtime="20231217 22:47:41.245"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:41.245" endtime="20231217 22:47:41.245"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:41.245" endtime="20231217 22:47:41.245"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:41.237" endtime="20231217 22:47:41.245"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:41.245" endtime="20231217 22:47:41.254"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:41.254" level="INFO">Clicking element '//button[@id='addQuickCart']'.</msg>
+<status status="PASS" starttime="20231217 22:47:41.254" endtime="20231217 22:47:41.270"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:43.273" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:41.271" endtime="20231217 22:47:43.274"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:41.223" endtime="20231217 22:47:43.274"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:41.198" endtime="20231217 22:47:43.274"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:41.198" endtime="20231217 22:47:43.274"/>
+</if>
+<kw name="Append To List" library="Collections">
+<arg>${prodNameList}</arg>
+<arg>${prodName}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:43.275" endtime="20231217 22:47:43.275"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${prodIdList}</arg>
+<arg>${prodId}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:43.276" endtime="20231217 22:47:43.276"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${priceProdList}</arg>
+<arg>${price}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:43.276" endtime="20231217 22:47:43.276"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${quatityProdList}</arg>
+<arg>${quatity}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="PASS" starttime="20231217 22:47:43.277" endtime="20231217 22:47:43.277"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:39.128" endtime="20231217 22:47:43.277"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:39.128" endtime="20231217 22:47:43.277"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:39.105" endtime="20231217 22:47:43.277"/>
+</iter>
+<iter>
+<var name="${size}">M</var>
+<kw name="Set Variable" library="BuiltIn">
+<var>${size}</var>
+<arg>//p[@class='size req']/a[contains(text(),'${size}')]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:43.278" level="INFO">${size} = //p[@class='size req']/a[contains(text(),'M')]</msg>
+<status status="PASS" starttime="20231217 22:47:43.277" endtime="20231217 22:47:43.278"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${size}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:43.278" level="INFO">//p[@class='size req']/a[contains(text(),'M')]</msg>
+<status status="PASS" starttime="20231217 22:47:43.278" endtime="20231217 22:47:43.278"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${checkOutStock}</var>
+<arg>${size}</arg>
+<arg>title</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:43.278" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:43.298" level="INFO">${checkOutStock} = Sản phẩm tạm thời hết hàng!</msg>
+<status status="PASS" starttime="20231217 22:47:43.278" endtime="20231217 22:47:43.298"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${checkOutStock}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:43.299" level="INFO">Sản phẩm tạm thời hết hàng!</msg>
+<status status="PASS" starttime="20231217 22:47:43.299" endtime="20231217 22:47:43.299"/>
+</kw>
+<if>
+<branch type="IF" condition="'${checkOutStock}' != 'Sản phẩm tạm thời hết hàng!'">
+<kw name="Click On Locator">
+<arg>${size}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:43.299" endtime="20231217 22:47:43.299"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>max</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.299" endtime="20231217 22:47:43.299"/>
+</kw>
+<if>
+<branch type="IF" condition="${quatity} &gt; 5">
+<kw name="Click On Locator">
+<arg>${btnPushQuantity}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:43.300" endtime="20231217 22:47:43.300"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.300" endtime="20231217 22:47:43.300"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.300" endtime="20231217 22:47:43.300"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.300" endtime="20231217 22:47:43.300"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:43.300" endtime="20231217 22:47:43.300"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:43.299" endtime="20231217 22:47:43.300"/>
+</branch>
+<branch type="ELSE">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.300" endtime="20231217 22:47:43.300"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.300" endtime="20231217 22:47:43.301"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.301" endtime="20231217 22:47:43.301"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:43.301" endtime="20231217 22:47:43.301"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:43.300" endtime="20231217 22:47:43.301"/>
+</branch>
+<status status="NOT RUN" starttime="20231217 22:47:43.299" endtime="20231217 22:47:43.301"/>
+</if>
+<kw name="Append To List" library="Collections">
+<arg>${prodNameList}</arg>
+<arg>${prodName}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.301" endtime="20231217 22:47:43.301"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${prodIdList}</arg>
+<arg>${prodId}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.301" endtime="20231217 22:47:43.301"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${priceProdList}</arg>
+<arg>${price}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.301" endtime="20231217 22:47:43.301"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${quatityProdList}</arg>
+<arg>${quatity}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.301" endtime="20231217 22:47:43.301"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:43.299" endtime="20231217 22:47:43.301"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:43.299" endtime="20231217 22:47:43.301"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:43.277" endtime="20231217 22:47:43.301"/>
+</iter>
+<iter>
+<var name="${size}">S</var>
+<kw name="Set Variable" library="BuiltIn">
+<var>${size}</var>
+<arg>//p[@class='size req']/a[contains(text(),'${size}')]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:43.302" level="INFO">${size} = //p[@class='size req']/a[contains(text(),'S')]</msg>
+<status status="PASS" starttime="20231217 22:47:43.301" endtime="20231217 22:47:43.302"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${size}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:43.302" level="INFO">//p[@class='size req']/a[contains(text(),'S')]</msg>
+<status status="PASS" starttime="20231217 22:47:43.302" endtime="20231217 22:47:43.302"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${checkOutStock}</var>
+<arg>${size}</arg>
+<arg>title</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:43.302" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:43.325" level="INFO">${checkOutStock} = Sản phẩm tạm thời hết hàng!</msg>
+<status status="PASS" starttime="20231217 22:47:43.302" endtime="20231217 22:47:43.325"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${checkOutStock}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:43.326" level="INFO">Sản phẩm tạm thời hết hàng!</msg>
+<status status="PASS" starttime="20231217 22:47:43.325" endtime="20231217 22:47:43.326"/>
+</kw>
+<if>
+<branch type="IF" condition="'${checkOutStock}' != 'Sản phẩm tạm thời hết hàng!'">
+<kw name="Click On Locator">
+<arg>${size}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>max</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</kw>
+<if>
+<branch type="IF" condition="${quatity} &gt; 5">
+<kw name="Click On Locator">
+<arg>${btnPushQuantity}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</branch>
+<branch type="ELSE">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${quatity}</var>
+<arg>${txtQuantity}</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.326"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${price}</var>
+<arg>${lblPrice}</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.327" endtime="20231217 22:47:43.327"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${prodId}</var>
+<arg>${btnQuickCart}</arg>
+<arg>selid</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.327" endtime="20231217 22:47:43.327"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnQuickCart}</arg>
+<status status="NOT RUN" starttime="20231217 22:47:43.327" endtime="20231217 22:47:43.327"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.327"/>
+</branch>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.327"/>
+</if>
+<kw name="Append To List" library="Collections">
+<arg>${prodNameList}</arg>
+<arg>${prodName}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.327" endtime="20231217 22:47:43.327"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${prodIdList}</arg>
+<arg>${prodId}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.327" endtime="20231217 22:47:43.327"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${priceProdList}</arg>
+<arg>${price}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.327" endtime="20231217 22:47:43.327"/>
+</kw>
+<kw name="Append To List" library="Collections">
+<arg>${quatityProdList}</arg>
+<arg>${quatity}</arg>
+<doc>Adds ``values`` to the end of ``list``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.327" endtime="20231217 22:47:43.327"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.327"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:43.326" endtime="20231217 22:47:43.327"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:43.301" endtime="20231217 22:47:43.327"/>
+</iter>
+<status status="PASS" starttime="20231217 22:47:39.105" endtime="20231217 22:47:43.327"/>
+</for>
+<status status="PASS" starttime="20231217 22:47:37.028" endtime="20231217 22:47:43.327"/>
+</iter>
+<status status="PASS" starttime="20231217 22:47:26.542" endtime="20231217 22:47:43.327"/>
+</for>
+<kw name="Click On Locator">
+<arg>${home}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:43.333" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:43.328" endtime="20231217 22:47:43.333"/>
+</kw>
+<msg timestamp="20231217 22:47:43.333" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:43.328" endtime="20231217 22:47:43.333"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.333" endtime="20231217 22:47:43.333"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:43.333" endtime="20231217 22:47:43.333"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:43.333" endtime="20231217 22:47:43.333"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:43.333" endtime="20231217 22:47:43.333"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:43.327" endtime="20231217 22:47:43.333"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:43.333" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:43.342" level="INFO">${showCart} = display: block;</msg>
+<status status="PASS" starttime="20231217 22:47:43.333" endtime="20231217 22:47:43.342"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:43.343" level="INFO">Clicking element '//a[@class='cartBtnOpen']'.</msg>
+<status status="PASS" starttime="20231217 22:47:43.343" endtime="20231217 22:47:43.360"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:43.343" endtime="20231217 22:47:43.360"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:43.343" endtime="20231217 22:47:43.360"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:43.333" endtime="20231217 22:47:43.360"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:43.360" endtime="20231217 22:47:43.374"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:43.374" level="INFO">Clicking element '(//a[@aria-label='logo'])[1]'.</msg>
+<status status="PASS" starttime="20231217 22:47:43.374" endtime="20231217 22:47:44.245"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:46.247" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:44.245" endtime="20231217 22:47:46.247"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:43.327" endtime="20231217 22:47:46.247"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:23.005" endtime="20231217 22:47:46.247"/>
+</iter>
+<status status="PASS" starttime="20231217 22:47:23.004" endtime="20231217 22:47:46.247"/>
+</for>
+<kw name="Log Many" library="BuiltIn">
+<arg>@{prodNameList}</arg>
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<msg timestamp="20231217 22:47:46.248" level="INFO">Áo len phối vạt lệch</msg>
+<msg timestamp="20231217 22:47:46.248" level="INFO">Áo len phối vạt lệch</msg>
+<msg timestamp="20231217 22:47:46.248" level="INFO">Áo len phối vạt lệch</msg>
+<status status="PASS" starttime="20231217 22:47:46.247" endtime="20231217 22:47:46.248"/>
+</kw>
+<kw name="Log Many" library="BuiltIn">
+<arg>@{prodIdList}</arg>
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<msg timestamp="20231217 22:47:46.248" level="INFO">40764764</msg>
+<msg timestamp="20231217 22:47:46.248" level="INFO">40764763</msg>
+<msg timestamp="20231217 22:47:46.248" level="INFO">40764740</msg>
+<status status="PASS" starttime="20231217 22:47:46.248" endtime="20231217 22:47:46.248"/>
+</kw>
+<kw name="Log Many" library="BuiltIn">
+<arg>@{priceProdList}</arg>
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<msg timestamp="20231217 22:47:46.248" level="INFO">565,000đ</msg>
+<msg timestamp="20231217 22:47:46.248" level="INFO">565,000đ</msg>
+<msg timestamp="20231217 22:47:46.248" level="INFO">565,000đ</msg>
+<status status="PASS" starttime="20231217 22:47:46.248" endtime="20231217 22:47:46.249"/>
+</kw>
+<kw name="Log Many" library="BuiltIn">
+<arg>@{quatityProdList}</arg>
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<msg timestamp="20231217 22:47:46.249" level="INFO">1</msg>
+<msg timestamp="20231217 22:47:46.249" level="INFO">1</msg>
+<msg timestamp="20231217 22:47:46.249" level="INFO">1</msg>
+<status status="PASS" starttime="20231217 22:47:46.249" endtime="20231217 22:47:46.249"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnIconCart}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:46.260" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:46.250" endtime="20231217 22:47:46.260"/>
+</kw>
+<msg timestamp="20231217 22:47:46.261" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:46.250" endtime="20231217 22:47:46.261"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:46.261" endtime="20231217 22:47:46.261"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:46.261" endtime="20231217 22:47:46.261"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:46.261" endtime="20231217 22:47:46.261"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:46.261" endtime="20231217 22:47:46.261"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:46.249" endtime="20231217 22:47:46.261"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:46.262" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:46.277" level="INFO">${showCart} = display: none;</msg>
+<status status="PASS" starttime="20231217 22:47:46.262" endtime="20231217 22:47:46.277"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:46.278" endtime="20231217 22:47:46.278"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:46.277" endtime="20231217 22:47:46.278"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:46.277" endtime="20231217 22:47:46.278"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:46.262" endtime="20231217 22:47:46.278"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:46.278" endtime="20231217 22:47:46.294"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:46.294" level="INFO">Clicking element '//a[@class='cartBtnOpen']'.</msg>
+<status status="PASS" starttime="20231217 22:47:46.294" endtime="20231217 22:47:46.315"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:48.317" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:46.315" endtime="20231217 22:47:48.318"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:46.249" endtime="20231217 22:47:48.318"/>
+</kw>
+<kw name="Click On Locator">
+<arg>${btnCart}</arg>
+<kw name="Close Banner">
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${showBanner}</var>
+<arg>Page Should Not Contain Element</arg>
+<arg>${banner}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Page Should Not Contain Element" library="Selenium2Library">
+<arg>${banner}</arg>
+<doc>Verifies that element ``locator`` is not found on the current page.</doc>
+<msg timestamp="20231217 22:47:48.338" level="INFO">Current page does not contain element '//div[@class='lz-inner-ctn']'.</msg>
+<status status="PASS" starttime="20231217 22:47:48.321" endtime="20231217 22:47:48.338"/>
+</kw>
+<msg timestamp="20231217 22:47:48.339" level="INFO">${showBanner} = True</msg>
+<status status="PASS" starttime="20231217 22:47:48.321" endtime="20231217 22:47:48.339"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showBanner}' == 'False'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnCloseBanner}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:48.339" endtime="20231217 22:47:48.339"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:48.339" endtime="20231217 22:47:48.339"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:48.339" endtime="20231217 22:47:48.339"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:48.339" endtime="20231217 22:47:48.339"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:48.320" endtime="20231217 22:47:48.339"/>
+</kw>
+<kw name="Close Cart">
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${showCart}</var>
+<arg>${modalCart}</arg>
+<arg>style</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:48.340" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:48.357" level="INFO">${showCart} = </msg>
+<status status="PASS" starttime="20231217 22:47:48.340" endtime="20231217 22:47:48.357"/>
+</kw>
+<if>
+<branch type="IF" condition="'${showCart}' == 'display: block;'">
+<kw name="Click Element" library="Selenium2Library">
+<arg>${btnIconCart}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20231217 22:47:48.357" endtime="20231217 22:47:48.357"/>
+</kw>
+<status status="NOT RUN" starttime="20231217 22:47:48.357" endtime="20231217 22:47:48.357"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:48.357" endtime="20231217 22:47:48.357"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:48.339" endtime="20231217 22:47:48.357"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" starttime="20231217 22:47:48.357" endtime="20231217 22:47:48.377"/>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:48.377" level="INFO">Clicking element '//a[contains(text(),'Xem giỏ hàng')]'.</msg>
+<status status="PASS" starttime="20231217 22:47:48.377" endtime="20231217 22:47:49.288"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20231217 22:47:51.290" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20231217 22:47:49.288" endtime="20231217 22:47:51.291"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:48.319" endtime="20231217 22:47:51.291"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${x}</var>
+<arg>0</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231217 22:47:51.292" level="INFO">${x} = 0</msg>
+<status status="PASS" starttime="20231217 22:47:51.292" endtime="20231217 22:47:51.292"/>
+</kw>
+<kw name="Get From List" library="Collections">
+<var>${prod}</var>
+<arg>${prodIdList}</arg>
+<arg>${x}</arg>
+<doc>Returns the value specified with an ``index`` from ``list``.</doc>
+<msg timestamp="20231217 22:47:51.293" level="INFO">${prod} = 40764764</msg>
+<status status="PASS" starttime="20231217 22:47:51.293" endtime="20231217 22:47:51.293"/>
+</kw>
+<kw name="Get From List" library="Collections">
+<var>${priceItem}</var>
+<arg>${priceProdList}</arg>
+<arg>${x}</arg>
+<doc>Returns the value specified with an ``index`` from ``list``.</doc>
+<msg timestamp="20231217 22:47:51.295" level="INFO">${priceItem} = 565,000đ</msg>
+<status status="PASS" starttime="20231217 22:47:51.294" endtime="20231217 22:47:51.295"/>
+</kw>
+<kw name="Get From List" library="Collections">
+<var>${quatityItem}</var>
+<arg>${quatityProdList}</arg>
+<arg>${x}</arg>
+<doc>Returns the value specified with an ``index`` from ``list``.</doc>
+<msg timestamp="20231217 22:47:51.296" level="INFO">${quatityItem} = 1</msg>
+<status status="PASS" starttime="20231217 22:47:51.295" endtime="20231217 22:47:51.296"/>
+</kw>
+<kw name="Get Element Attribute" library="Selenium2Library">
+<var>${soluong}</var>
+<arg>//tr[@data-id='${prod}']/td[@class='quantityProduct']//input</arg>
+<arg>value</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20231217 22:47:51.296" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:51.320" level="INFO">${soluong} = 1</msg>
+<status status="PASS" starttime="20231217 22:47:51.296" endtime="20231217 22:47:51.320"/>
+</kw>
+<kw name="Get Text" library="Selenium2Library">
+<var>${gia}</var>
+<arg>//tr[@data-id='${prod}']//div[@class='priceWislist']/span</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<msg timestamp="20231217 22:47:51.335" level="INFO">${gia} = 565,000đ</msg>
+<status status="PASS" starttime="20231217 22:47:51.320" endtime="20231217 22:47:51.335"/>
+</kw>
+<if>
+<branch type="IF" condition="&quot;${priceItem}&quot; == &quot;${gia}&quot;">
+<if>
+<branch type="IF" condition="&quot;${quatityItem}&quot; == &quot;${soluong}&quot;">
+<kw name="Log" library="BuiltIn">
+<arg>passsssss</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231217 22:47:51.336" level="INFO">passsssss</msg>
+<status status="PASS" starttime="20231217 22:47:51.336" endtime="20231217 22:47:51.336"/>
+</kw>
+<status status="PASS" starttime="20231217 22:47:51.336" endtime="20231217 22:47:51.336"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:51.336" endtime="20231217 22:47:51.336"/>
+</if>
+<status status="PASS" starttime="20231217 22:47:51.336" endtime="20231217 22:47:51.336"/>
+</branch>
+<status status="PASS" starttime="20231217 22:47:51.336" endtime="20231217 22:47:51.336"/>
+</if>
 <kw name="Close Browser" library="Selenium2Library" type="TEARDOWN">
 <doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20231128 22:59:52.245" endtime="20231128 22:59:52.345"/>
+<status status="PASS" starttime="20231217 22:47:51.336" endtime="20231217 22:47:51.469"/>
 </kw>
-<status status="PASS" starttime="20231128 22:59:33.351" endtime="20231128 22:59:52.346"/>
+<status status="PASS" starttime="20231217 22:47:17.784" endtime="20231217 22:47:51.469"/>
 </test>
-<status status="PASS" starttime="20231128 22:58:37.062" endtime="20231128 22:59:52.346"/>
+<status status="PASS" starttime="20231217 22:47:17.698" endtime="20231217 22:47:51.470"/>
 </suite>
 <statistics>
 <total>
-<stat pass="5" fail="0" skip="0">All Tests</stat>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="5" fail="0" skip="0" id="s1" name="Fn Login">Fn Login</stat>
+<stat pass="1" fail="0" skip="0" id="s1" name="Fn Login">Fn Login</stat>
 </suite>
 </statistics>
 <errors>
+<msg timestamp="20231217 22:47:23.025" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:26.549" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:28.596" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:28.634" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:30.690" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:30.717" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:30.746" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:30.764" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:32.808" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:32.840" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:34.889" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:34.911" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:34.938" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:34.955" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:37.000" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:37.037" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:39.107" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:39.138" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:41.187" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:41.198" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:41.216" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:41.237" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:43.278" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:43.302" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:43.333" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:46.262" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:48.340" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
+<msg timestamp="20231217 22:47:51.296" level="WARN">Keyword 'Get Element Attribute' found both from a custom library 'Selenium2Library' and a standard library 'XML'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'Selenium2Library.Get Element Attribute' or 'XML.Get Element Attribute'.</msg>
 </errors>
 </robot>
