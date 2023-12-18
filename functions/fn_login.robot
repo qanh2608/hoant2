@@ -8,7 +8,7 @@ Test Teardown      Close Browser
 
 *** Variables ***
 #@{list}  4  6
-@{list}  6
+@{list}  1  2
 ${sleep}    2s
 ${url}    https://jm.com.vn/
 ${browser}  chrome
@@ -72,6 +72,7 @@ Add to Cart
     @{prodIdList}         Create List
     @{priceProdList}      Create List
     @{quatityProdList}    Create List
+
     FOR    ${item}    IN    @{list}
         Click On Locator    //div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active'][${item}]//div[@class='productImage']
         ${prodName}     Get Text    //h1[@class='title-head']
@@ -88,7 +89,7 @@ Add to Cart
                 IF    '${checkOutStock}' != 'Sản phẩm tạm thời hết hàng!'
                     Click On Locator    ${size}
                     ${quatity}      Get Element Attribute    ${txtQuantity}    max
-                    IF    ${quatity} > 5
+                    IF    ${quatity} > 10
                         Click On Locator    ${btnPushQuantity}
                         ${quatity}  Get Element Attribute    ${txtQuantity}    value
                         ${price}    Get Text    ${lblPrice}
@@ -115,49 +116,59 @@ Add to Cart
     Log Many    @{priceProdList}
     Log Many    @{quatityProdList}
 
+    ${max_i}    Get Length    ${prodIdList}
+    Log    ${max_i}
+
     Click On Locator    ${btnIconCart}
     Click On Locator    ${btnCart}
 
     ${x}    Set Variable    0
-    ${prod}     Get From List    ${prodIdList}    ${x}
-    ${priceItem}    Get From List    ${priceProdList}    ${x}
-    ${quatityItem}  Get From List    ${quatityProdList}    ${x}
+    ${total_item}   Set Variable    0
+    ${total_gia}    Set Variable    0
+    WHILE  ${x} < ${max_i}
+        ${prod}         Get From List    ${prodIdList}    ${x}
+        ${priceItem}    Get From List    ${priceProdList}    ${x}
+        ${priceItem}    Replace String  ${priceItem}  ,   ${EMPTY}
+        ${priceItem}    Replace String  ${priceItem}  đ   ${EMPTY}
+        ${quatityItem}  Get From List    ${quatityProdList}    ${x}
+        ${priceItem}    Evaluate    ${quatityItem}*${priceItem}
+        
+        ${soluong}  Get Element Attribute    //tr[@data-id='${prod}']/td[@class='quantityProduct']//input    value
+        ${gia}      Get Text    //tr[@data-id='${prod}']//div[@class='priceWislist']/span
+        ${gia}    Replace String  ${gia}  ,   ${EMPTY}
+        ${gia}    Replace String  ${gia}  đ   ${EMPTY}        
 
-    ${soluong}  Get Element Attribute    //tr[@data-id='${prod}']/td[@class='quantityProduct']//input    value
-    ${gia}      Get Text    //tr[@data-id='${prod}']//div[@class='priceWislist']/span
-
-    IF    "${priceItem}" == "${gia}"
-        IF    "${quatityItem}" == "${soluong}"
-            Log    passsssss
+        IF    "${priceItem}" == "${gia}"
+            IF    "${quatityItem}" == "${soluong}"
+                Log    Pass | San pham: ${prod} | Gia mua: ${priceItem} | Gia hoa don: ${gia} | So luong mua: ${quatityItem} | So luong hoa don: ${soluong}
+            ELSE
+                Log    Fail | San pham: ${prod} | Gia mua: ${priceItem} | Gia hoa don: ${gia} | So luong mua: ${quatityItem} | So luong hoa don: ${soluong}
+            END
+        ELSE
+            Log    Fail | San pham: ${prod} | Gia mua: ${priceItem} | Gia hoa don: ${gia} | So luong mua: ${quatityItem} | So luong hoa don: ${soluong}
         END
-    END     
+        ${total_item}   Evaluate    ${total_item} + ${priceItem}
+        ${total_gia}    Evaluate    ${total_gia} + ${gia}
+        ${x}    Evaluate    ${x} + 1
+    END
+    
+    Log    ${total_item}
+    Log    ${total_gia}
 
-#    ${total}    Set Variable    0
-#    @{array}    Get WebElements    //div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active']
-#    Log Many    @{array}
-#    Log    ${x}
-#    Log    ${total}
-#    WHILE  ${x} < 2
-#        ${sl}   Get Element Attribute    //tr[@class = 'idProduct'][${x}]/td[@class = 'quantityProduct']//input[@name = 'Lines']   value
-#        ${price1}    Get Text    //tr[@class = 'idProduct'][${x}]//div[@class = 'priceWislist']/span
-#        ${price1}    Replace String  ${price1}  ,   ${EMPTY}
-#        ${price1}    Replace String  ${price1}  đ   ${EMPTY}
-#        ${total}    Evaluate    ${total} + ${sl}*${price1}
-#        Log     ${total}
-#        ${x}    Evaluate    ${x} + 1
-#        Log    ${x}
-#    END
-#
-#    ${total_end}   Get Text    //strong[@class='totals_price2']
-#    ${total_end}    Replace String  ${total_end}  ,   ${EMPTY}
-#    ${total_end}    Replace String  ${total_end}  đ   ${EMPTY}
-#    Log    ${total_end}
-#
-#    IF    ${total} == ${total_end}
-#        Log To Console    PASS ${total} = ${total_end}
-#    ELSE
-#        Log To Console    FAIL ${total} != ${total_end}
-#    END
+    ${total_end}   Get Text    //strong[@class='totals_price2']
+    ${total_end}    Replace String  ${total_end}  ,   ${EMPTY}
+    ${total_end}    Replace String  ${total_end}  đ   ${EMPTY}
+    Log    ${total_end}
+
+    IF    ${total_item} == ${total_end}
+        IF    ${total_item} == ${total_gia}
+             Log    PASS | Tong mua: ${total_item} | Tong hoa don: ${total_gia} | Tong all: ${total_end}
+        ELSE
+            Log    FAIL | Tong mua: ${total_item} | Tong hoa don: ${total_gia} | Tong all: ${total_end}
+        END
+    ELSE
+        Log    FAIL | Tong mua: ${total_item} | Tong hoa don: ${total_gia} | Tong all: ${total_end}
+    END
 
 *** Keywords ***
 Open New Browser
