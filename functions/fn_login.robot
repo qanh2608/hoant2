@@ -36,37 +36,37 @@ ${colorPink}    //div[@class='filter-color attributeFilter category-filter']/ul[
 ${prodTop}      //div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active']
 
 *** Test Cases ***
-#Search JM
-#    Input Value    ${txtSearch}  ${key}
-#    Click On Locator    ${btnSearch}
-#    Page Should Contain    sản phẩm tìm kiếm với kết quả "${key}"
-#    Capture Page Screenshot
-#
-#Filter Size
-#    Input Value    ${txtSearch}  ${key}
-#    Click On Locator    ${btnSearch}
-#    Click On Locator    ${sizeL}
-#
-#Filter Color
-#    Input Value    ${txtSearch}  ${key}
-#    Click On Locator    ${btnSearch}
-#    Click On Locator    ${colorPink}
-#
-#Prod Favorite
-#    Click On Locator    ${prodTop}
-#    ${prodName}     Get Text    //h1[@class='title-head']
-##    Add
-#    Click On Locator    ${btnAddFavorite}
-#    Handle Alert    ACCEPT
-#    Sleep    ${sleep}
-#    Click On Locator    ${btnWishList}
-#    Page Should Contain    ${prodName}
-##   Delete
-#    Click On Locator    //td[@class='actitonWislist']/a[@class='removeFav']
-#    Sleep    ${sleep}
-#    Handle Alert    ACCEPT
-#    Sleep    ${sleep}
-#    Page Should Not Contain    ${prodName}
+Search JM
+    Input Value    ${txtSearch}  ${key}
+    Click On Locator    ${btnSearch}
+    Page Should Contain    sản phẩm tìm kiếm với kết quả "${key}"
+    Capture Page Screenshot
+
+Filter Size
+    Input Value    ${txtSearch}  ${key}
+    Click On Locator    ${btnSearch}
+    Click On Locator    ${sizeL}
+
+Filter Color
+    Input Value    ${txtSearch}  ${key}
+    Click On Locator    ${btnSearch}
+    Click On Locator    ${colorPink}
+
+Prod Favorite
+    Click On Locator    ${prodTop}
+    ${prodName}     Get Text    //h1[@class='title-head']
+#    Add
+    Click On Locator    ${btnAddFavorite}
+    Handle Alert    ACCEPT
+    Sleep    ${sleep}
+    Click On Locator    ${btnWishList}
+    Page Should Contain    ${prodName}
+#   Delete
+    Click On Locator    //td[@class='actitonWislist']/a[@class='removeFav']
+    Sleep    ${sleep}
+    Handle Alert    ACCEPT
+    Sleep    ${sleep}
+    Page Should Not Contain    ${prodName}
 
 Add to Cart
     @{prodNameList}       Create List
@@ -144,20 +144,18 @@ Add to Cart
         ${gia}    Replace String  ${gia}  ,   ${EMPTY}
         ${gia}    Replace String  ${gia}  đ   ${EMPTY}        
 
-        IF    "${priceItem}" == "${gia}"
-            IF    "${quatityItem}" == "${soluong}"
-                Log    Pass | San pham: ${prod} | Gia mua: ${priceItem} | Gia hoa don: ${gia} | So luong mua: ${quatityItem} | So luong hoa don: ${soluong}
-            ELSE
-                Log    Fail | San pham: ${prod} | Gia mua: ${priceItem} | Gia hoa don: ${gia} | So luong mua: ${quatityItem} | So luong hoa don: ${soluong}
-            END
-        ELSE
-            Log    Fail | San pham: ${prod} | Gia mua: ${priceItem} | Gia hoa don: ${gia} | So luong mua: ${quatityItem} | So luong hoa don: ${soluong}
-        END
+#        ${ssSoLuong}    Run Keyword And Return Status    Should Be Equal As Numbers    ${quatityItem}    ${soluong}
+#        Log    ${x} | San pham: ${prod} | Gia mua: ${priceItem} | Gia hoa don: ${gia} | So luong mua: ${quatityItem} | So luong hoa don: ${soluong}
+#
+#        IF    "${ssSoLuong}" == "True"
+#            Should Be Equal As Numbers    ${gia}    ${priceItem}
+#        END
+
         ${total_item}   Evaluate    ${total_item} + ${priceItem}
         ${total_gia}    Evaluate    ${total_gia} + ${gia}
         ${x}    Evaluate    ${x} + 1
     END
-    
+
     Log    ${total_item}
     Log    ${total_gia}
 
@@ -167,14 +165,10 @@ Add to Cart
     ${total_end}    Replace String  ${total_end}  đ   ${EMPTY}
     Log    ${total_end}
 
-    IF    ${total_item} == ${total_end}
-        IF    ${total_item} == ${total_gia}
-             Log    PASS | Tong mua: ${total_item} | Tong hoa don: ${total_gia} | Tong all: ${total_end}
-        ELSE
-            Log    FAIL | Tong mua: ${total_item} | Tong hoa don: ${total_gia} | Tong all: ${total_end}
-        END
-    ELSE
-        Log    FAIL | Tong mua: ${total_item} | Tong hoa don: ${total_gia} | Tong all: ${total_end}
+    ${compare_totalItem_totalEnd}    Run Keyword And Return Status    Should Be Equal As Numbers    ${total_item}    ${total_end}
+    Log To Console   | Tong mua: ${total_item} | Tong hoa don: ${total_gia} | Tong all: ${total_end}
+    IF    "${compare_totalItem_totalEnd}" == "True"
+         Should Be Equal As Numbers    ${total_item}    ${total_gia}
     END
 
 *** Keywords ***
