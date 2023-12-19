@@ -25,7 +25,8 @@ ${btnIconCart}      //a[@class='cartBtnOpen']
 ${btnCart}          //a[contains(text(),'Xem giỏ hàng')]
 ${lblPrice}         //span[@class='discountPrice tp_product_detail_price']
 ${txtQuantity}      //input[@class='qty-detail input-text qty-view']
-${btnPushQuantity}  //button[@class='btn-cts btn-plus-view']
+${btnPlusQuantity}  //button[@class='btn-cts btn-plus-view']
+${btnMinusQuantity}  //button[@class='btn-cts btn-minus-view']
 ${btnBuyNow}       //button[@id='buyNow']
 ${btnQuickCart}       //button[@id='addQuickCart']
 #value search
@@ -73,6 +74,7 @@ Add to Cart
     @{priceProdList}      Create List
     @{quatityProdList}    Create List
 
+#Add san pham vao gio hang
     FOR    ${item}    IN    @{list}
         Click On Locator    //div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active'][${item}]//div[@class='productImage']
         ${prodName}     Get Text    //h1[@class='title-head']
@@ -90,11 +92,12 @@ Add to Cart
                     Click On Locator    ${size}
                     ${quatity}      Get Element Attribute    ${txtQuantity}    max
                     IF    ${quatity} > 10
-                        Click On Locator    ${btnPushQuantity}
+                        Click On Locator    ${btnPlusQuantity}
                         ${quatity}  Get Element Attribute    ${txtQuantity}    value
                         ${price}    Get Text    ${lblPrice}
                         ${prodId}   Get Element Attribute    ${btnQuickCart}    selid
                         Click On Locator    ${btnQuickCart}
+                        Click On Locator    ${btnMinusQuantity}
                     ELSE
                         ${quatity}  Get Element Attribute    ${txtQuantity}    value
                         ${price}    Get Text   ${lblPrice}
@@ -116,14 +119,17 @@ Add to Cart
     Log Many    @{priceProdList}
     Log Many    @{quatityProdList}
 
-    ${max_i}    Get Length    ${prodIdList}
-    Log    ${max_i}
-
+# Vao man hinh gio hang
     Click On Locator    ${btnIconCart}
     Click On Locator    ${btnCart}
 
+    ${max_i}    Get Length    ${prodIdList}
+    Log    ${max_i}
     ${x}    Set Variable    0
+
+#total_item = gia o man detail san pham * so luong san pham
     ${total_item}   Set Variable    0
+#total_gia = gia o man gio hang
     ${total_gia}    Set Variable    0
     WHILE  ${x} < ${max_i}
         ${prod}         Get From List    ${prodIdList}    ${x}
@@ -155,6 +161,7 @@ Add to Cart
     Log    ${total_item}
     Log    ${total_gia}
 
+#total_end = tong hoa don hien thi o man gio hang
     ${total_end}   Get Text    //strong[@class='totals_price2']
     ${total_end}    Replace String  ${total_end}  ,   ${EMPTY}
     ${total_end}    Replace String  ${total_end}  đ   ${EMPTY}
