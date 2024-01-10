@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.10.5 on darwin)" generated="20231219 22:13:25.906" rpa="false" schemaversion="3">
+<suite id="s1" name="Fn Login" source="/Users/anan/JMDress/functions/fn_login.robot">
+<test id="s1-t1" name="Search JM" line="39">
+<kw name="Open New Browser" type="SETUP">
+<arg>${url}</arg>
+<arg>${browser}</arg>
+<kw name="Open Browser" library="Selenium2Library">
+<arg>${url}</arg>
+<arg>${browser}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20231219 22:13:26.029" level="INFO">Opening browser 'chrome' to base url 'https://jm.com.vn/'.</msg>
+<msg timestamp="20231219 22:13:26.030" level="INFO">Applicable driver not found; attempting to install with Selenium Manager (Beta)</msg>
+<msg timestamp="20231219 22:13:52.010" level="WARN">Unable to obtain driver using Selenium Manager: Selenium Manager failed for: /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/selenium/webdriver/common/macos/selenium-manager --browser chrome --output json.
+The chromedriver version cannot be discovered</msg>
+<msg timestamp="20231219 22:13:52.012" level="INFO">Cannot capture screenshot because no browser is open.</msg>
+<msg timestamp="20231219 22:13:52.014" level="FAIL">SeleniumManagerException: Message: Selenium Manager failed for: /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/selenium/webdriver/common/macos/selenium-manager --browser chrome --output json.
+The chromedriver version cannot be discovered
+</msg>
+<status status="FAIL" starttime="20231219 22:13:26.029" endtime="20231219 22:13:52.020"/>
+</kw>
+<kw name="Maximize Browser Window" library="Selenium2Library">
+<doc>Maximizes current browser window.</doc>
+<status status="NOT RUN" starttime="20231219 22:13:52.021" endtime="20231219 22:13:52.021"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>${sleep}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20231219 22:13:52.021" endtime="20231219 22:13:52.021"/>
+</kw>
+<status status="FAIL" starttime="20231219 22:13:26.029" endtime="20231219 22:13:52.022"/>
+</kw>
+<kw name="Close Browser" library="Selenium2Library" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" starttime="20231219 22:13:52.023" endtime="20231219 22:13:52.023"/>
+</kw>
+<status status="FAIL" starttime="20231219 22:13:26.027" endtime="20231219 22:13:52.024">Setup failed:
+SeleniumManagerException: Message: Selenium Manager failed for: /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/selenium/webdriver/common/macos/selenium-manager --browser chrome --output json.
+The chromedriver version cannot be discovered
+</status>
+</test>
+<status status="FAIL" starttime="20231219 22:13:25.907" endtime="20231219 22:13:52.025"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Fn Login">Fn Login</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20231219 22:13:52.010" level="WARN">Unable to obtain driver using Selenium Manager: Selenium Manager failed for: /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/selenium/webdriver/common/macos/selenium-manager --browser chrome --output json.
+The chromedriver version cannot be discovered</msg>
+</errors>
+</robot>

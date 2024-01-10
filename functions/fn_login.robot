@@ -1,72 +1,47 @@
 *** Settings ***
-Library     Selenium2Library
+Library    Selenium2Library
 Library    String
 Library    Collections
 Library    XML
+Resource    ../locators/locatorHome.robot
+Resource    ../locators/locatorProdDetail.robot
+Resource    ../locators/locatorSearchResult.robot
 Test Setup     Open New Browser    ${url}      ${browser}
 Test Teardown      Close Browser
 
 *** Variables ***
-#@{list}  4  6
-@{list}  1  2
+@{list}  2  1
 ${sleep}    2s
 ${url}    https://jm.com.vn/
 ${browser}  chrome
 
-${home}         (//a[@aria-label='logo'])[1]
-${banner}       //div[@class='lz-inner-ctn']
-${btnCloseBanner}   //div[@class='lz-inner-ctn']//div[@class='aim-banner__content-banner_close aimkt-close-popup']
-${modalCart}    //div[@class='cartHeaderContent']
-${txtSearch}    //div[@class='wrapBoxSearch hidden-sm hidden-xs']//input[@placeholder='Bạn muốn tìm sản phẩm gì ?']
-${btnSearch}    //button[contains(text(),'Tìm kiếm ngay')]
-${btnAddFavorite}   //a[@title='Thêm vào yêu thích']
-${btnWishList}      //div[@class='iconHeader col-lg-2 col-md-2']//a[@aria-label='wishlist']
-${btnIconCart}      //a[@class='cartBtnOpen']
-${btnCart}          //a[contains(text(),'Xem giỏ hàng')]
-${lblPrice}         //span[@class='discountPrice tp_product_detail_price']
-${txtQuantity}      //input[@class='qty-detail input-text qty-view']
-${btnPlusQuantity}  //button[@class='btn-cts btn-plus-view']
-${btnMinusQuantity}  //button[@class='btn-cts btn-minus-view']
-${btnBuyNow}       //button[@id='buyNow']
-${btnQuickCart}       //button[@id='addQuickCart']
 #value search
 ${key}  Áo
-${sizeL}        //div[@class='filter-size attributeFilter category-filter']/ul[@style='display: block']/li[@data-column='i2' and @data-value='1747439']
-${colorPink}    //div[@class='filter-color attributeFilter category-filter']/ul[@style='display: block']/li[@data-column='i1' and @data-value='1849463']
 ${prodTop}      //div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active']
 
 *** Test Cases ***
 Search JM
-    Input Value    ${txtSearch}  ${key}
-    Click On Locator    ${btnSearch}
+    Search By Keyword    ${key}
     Page Should Contain    sản phẩm tìm kiếm với kết quả "${key}"
     Capture Page Screenshot
 
 Filter Size
-    Input Value    ${txtSearch}  ${key}
-    Click On Locator    ${btnSearch}
-    Click On Locator    ${sizeL}
+    Search By Keyword    ${key}
+    Filter By Size    L
+    Filter By Size    S
+#    Filter By Size    test
 
 Filter Color
-    Input Value    ${txtSearch}  ${key}
-    Click On Locator    ${btnSearch}
-    Click On Locator    ${colorPink}
+    Search By Keyword    ${key}
+#    Filter By Color    Hồng Phớt
+    Filter By Color    Cam
+#    Filter By Color    test
 
 Prod Favorite
     Click On Locator    ${prodTop}
-    ${prodName}     Get Text    //h1[@class='title-head']
-#    Add
-    Click On Locator    ${btnAddFavorite}
-    Handle Alert    ACCEPT
-    Sleep    ${sleep}
-    Click On Locator    ${btnWishList}
-    Page Should Contain    ${prodName}
-#   Delete
-    Click On Locator    //td[@class='actitonWislist']/a[@class='removeFav']
-    Sleep    ${sleep}
-    Handle Alert    ACCEPT
-    Sleep    ${sleep}
-    Page Should Not Contain    ${prodName}
+    ${prodName}     Get Text    ${lblProdName}
+    Add Prod Favorite    ${prodName}
+    Remove Prod Favorite    ${prodName}
 
 Add to Cart
     @{prodNameList}       Create List
@@ -77,8 +52,9 @@ Add to Cart
 #Add san pham vao gio hang
     FOR    ${item}    IN    @{list}
         Click On Locator    //div[@class='productList hotProductList owl-carousel owl-loaded owl-drag']//div[@class='owl-item active'][${item}]//div[@class='productImage']
-        ${prodName}     Get Text    //h1[@class='title-head']
-        @{colorList}    Get WebElements    //span[@class='itemColor']
+        ${prodName}     Get Text    ${lblProdName}
+        @{colorList}    Create List
+        @{colorList}    Get WebElements    ${itemColor}
         FOR    ${color}    IN    @{colorList}
             Log    ${color}
             Click On Locator    ${color}
@@ -91,7 +67,7 @@ Add to Cart
                 IF    '${checkOutStock}' != 'Sản phẩm tạm thời hết hàng!'
                     Click On Locator    ${size}
                     ${quatity}      Get Element Attribute    ${txtQuantity}    max
-                    IF    ${quatity} > 10
+                    IF    ${quatity} > 50
                         Click On Locator    ${btnPlusQuantity}
                         ${quatity}  Get Element Attribute    ${txtQuantity}    value
                         ${price}    Get Text    ${lblPrice}
@@ -138,11 +114,11 @@ Add to Cart
         ${priceItem}    Replace String  ${priceItem}  đ   ${EMPTY}
         ${quatityItem}  Get From List    ${quatityProdList}    ${x}
         ${priceItem}    Evaluate    ${quatityItem}*${priceItem}
-        
+
         ${soluong}  Get Element Attribute    //tr[@data-id='${prod}']/td[@class='quantityProduct']//input    value
         ${gia}      Get Text    //tr[@data-id='${prod}']//div[@class='priceWislist']/span
         ${gia}    Replace String  ${gia}  ,   ${EMPTY}
-        ${gia}    Replace String  ${gia}  đ   ${EMPTY}        
+        ${gia}    Replace String  ${gia}  đ   ${EMPTY}
 
 #        ${ssSoLuong}    Run Keyword And Return Status    Should Be Equal As Numbers    ${quatityItem}    ${soluong}
 #        Log    ${x} | San pham: ${prod} | Gia mua: ${priceItem} | Gia hoa don: ${gia} | So luong mua: ${quatityItem} | So luong hoa don: ${soluong}
@@ -210,6 +186,59 @@ Input Value
     Sleep    ${sleep}
 #    Capture Page Screenshot     EMBED
 
+Search By Keyword
+    [Arguments]     ${key}
+    Input Value    ${txtSearch}  ${key}
+    Click On Locator    ${btnSearch}
+
+Filter By Size
+    [Arguments]     ${size}
+    IF    "${size}" == "FREE"
+        Click On Locator    ${btnSize}li[@data-value='1755563']
+    ELSE IF     "${size}" == "38"
+        Click On Locator    ${btnSize}li[@data-value='1747446']
+    ELSE IF     "${size}" == "XL"
+        Click On Locator    ${btnSize}li[@data-value='1747441']
+    ELSE IF     "${size}" == "L"
+        Click On Locator    ${btnSize}li[@data-value='1747439']
+    ELSE IF     "${size}" == "M"
+        Click On Locator    ${btnSize}li[@data-value='1747437']
+    ELSE IF     "${size}" == "S"
+        Click On Locator    ${btnSize}li[@data-value='1747435']
+    ELSE
+       Log    Not Found Color ${size}
+       Page Should Contain Element    ${size}
+    END
+    Capture Page Screenshot
+    
+Filter By Color
+    [Arguments]     ${color}
+    ${checkColor}   Run Keyword And Return Status    Page Should Contain Element    ${btnColor}label[@title='${color}']
+    IF    "${checkColor}" == "True"
+        Click On Locator    ${btnColor}label[@title='${color}']
+        Capture Page Screenshot
+    ELSE
+        Log    Not Found Color ${color}
+        Page Should Contain Element    ${btnColor}label[@title='${color}']
+    END
+
+Add Prod Favorite
+    [Arguments]     ${prodName}
+    Click On Locator    ${btnAddFavorite}
+    Handle Alert    ACCEPT
+    Sleep    ${sleep}
+    Click On Locator    ${btnWishList}
+    Page Should Contain    ${prodName}
+    
+Remove Prod Favorite
+    [Arguments]     ${prodName}
+    Page Should Contain    ${prodName}
+    Click On Locator    ${btnRemoveFav}
+    Sleep    ${sleep}
+    Handle Alert    ACCEPT
+    Sleep    ${sleep}
+    Page Should Not Contain    ${prodName}
+    
 Verify Element Text
     [Arguments]     ${locator}      ${text}
     Wait Until Page Contains Element    ${locator}      ${sleep}
